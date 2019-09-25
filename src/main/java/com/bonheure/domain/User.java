@@ -4,32 +4,28 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(indexes = {
-		@Index(name = "user_reference",columnList = "reference",unique = true)
-})
+@Table(indexes = {@Index(name = "index_user_reference", columnList = "reference", unique = true)})
 public class User {
 	
 	@Id
-	private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@Column(unique = true)
 	private String reference;
-	
+
 	private String firstName;
-	
+
 	private String lastName;
-	
+
 	private String email;
 	
-	private int mobileNumber;
+	private String mobileNumber;
 	
 	private String password;
 	
@@ -44,11 +40,11 @@ public class User {
 	@ManyToOne
 	private Role role;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -86,11 +82,11 @@ public class User {
 
 	
 
-	public int getMobileNumber() {
+	public String getMobileNumber() {
 		return mobileNumber;
 	}
 
-	public void setMobileNumber(int mobileNumber) {
+	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 
@@ -132,6 +128,15 @@ public class User {
 
 	public void setActivated(Boolean activated) {
 		this.activated = activated;
+	}
+
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	@Override

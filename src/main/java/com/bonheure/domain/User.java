@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(indexes = {@Index(name = "index_user_reference", columnList = "reference", unique = true)})
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 	
 	@Id
@@ -37,7 +38,7 @@ public class User {
 	
 	private Boolean activated;
 	
-	@ManyToOne
+	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	public Long getId() {

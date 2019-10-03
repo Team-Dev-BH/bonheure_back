@@ -14,6 +14,7 @@ spring:
     url: jdbc:mysql://localhost:3306/bonheure?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
     name: bonheure
     username: root
+    password: root
     type: com.zaxxer.hikari.HikariDataSource
     password: root
   application:

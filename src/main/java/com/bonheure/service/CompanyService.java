@@ -1,96 +1,86 @@
 package com.bonheure.service;
 
+import com.bonheure.controller.dto.CompanyDTO;
+import com.bonheure.domain.Company;
+import com.bonheure.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bonheure.controller.dto.CompanyDTO;
-import com.bonheure.domain.Societe;
-import com.bonheure.repository.CompanyRepository;
-
 @Service
-public class SocieteService {
-	
-	@Autowired
+public class CompanyService {
+
+    @Autowired
     CompanyRepository societyRepository;
-	
-	
-	
 
-    public CompanyDTO saveSociete(CompanyDTO companyDTO)
-    {
-       Societe societe = getSocieteFromDto(companyDTO);
 
-        societyRepository.save(societe);
+    public CompanyDTO saveCompany(CompanyDTO companyDTO) {
+        Company company = getCompanyFromDto(companyDTO);
+
+        societyRepository.save(company);
 
         return companyDTO;
 
     }
 
-    
-    public CompanyDTO getSocieteByReference(String reference)
-    {
-    	Societe societe =  societyRepository.findByReference(reference);
 
-    	CompanyDTO companyDTO =  getSocieteDTOFromSociete(societe);
+    public CompanyDTO getCompanyByReference(String reference) {
+        Company company = societyRepository.findOneByReference(reference).orElse(null);
+
+        CompanyDTO companyDTO = getCompanyDTOFromCompany(company);
 
         return companyDTO;
     }
-    
-    public void  deleteSocieteByReference(String reference)
-    {
-       Societe societe = societyRepository.findByReference(reference);
-       societyRepository.delete(societe);
-    
-    }
-    
-    public CompanyDTO updateSocieteByReference(String reference, CompanyDTO companyDTO)
-    {
-    	 Societe societeOld = societyRepository.findByReference(reference);
-    	 Societe societeNew = getSocieteFromDto(companyDTO);
-    	 
-    	if ( societeOld != null )
-    	{
-    		Update(societeOld,societeNew);
-    	}
-        return companyDTO;
+
+    public void deleteCompanyByReference(String reference) {
+        Company company = societyRepository.findOneByReference(reference).orElse(null);
+        societyRepository.delete(company);
+
     }
 
-    
-    
-    
-    private CompanyDTO getSocieteDTOFromSociete(Societe societe) {
+    public CompanyDTO updateCompanyByReference(String reference, CompanyDTO companyDTO) {
+        Company companyOld = societyRepository.findOneByReference(reference).orElse(null);
+        Company companyNew = getCompanyFromDto(companyDTO);
 
-    	CompanyDTO companyDTO = new CompanyDTO();
-
-    	companyDTO.setActivityField(societe.getActivityField());
-    	companyDTO.setCode(societe.getCode());
-    	companyDTO.setName(societe.getName());
-    	companyDTO.setReference(societe.getReference());
-       
-       
-        return companyDTO;
+        if (companyOld != null) {
+            Update(companyOld, companyNew);
         }
-    
-    
-    private Societe getSocieteFromDto(CompanyDTO companyDTO) {
-    	Societe societe = new Societe();
-
-         societe.setActivityField(companyDTO.getActivityField());
-         societe.setCode(companyDTO.getCode());
-         societe.setName(companyDTO.getName());
-         societe.setReference(companyDTO.getReference());
-        return societe;
+        return companyDTO;
     }
-    
-    private void Update(Societe SocieteOld ,Societe SocieteNew) {     
-    	
-    	SocieteOld.setActivityField(SocieteNew.getActivityField());  
-    	SocieteOld.setCode(SocieteNew.getCode());
-    	SocieteOld.setName(SocieteNew.getName());
-    	SocieteOld.setReference(SocieteNew.getReference());
-    	
-   	
-   	    societyRepository.save(SocieteOld);
-   }
-    
+
+
+    private CompanyDTO getCompanyDTOFromCompany(Company company) {
+
+        CompanyDTO companyDTO = new CompanyDTO();
+
+        companyDTO.setActivityField(company.getActivityField());
+        companyDTO.setCode(company.getCode());
+        companyDTO.setName(company.getName());
+        companyDTO.setReference(company.getReference());
+
+
+        return companyDTO;
+    }
+
+
+    private Company getCompanyFromDto(CompanyDTO companyDTO) {
+        Company company = new Company();
+
+        company.setActivityField(companyDTO.getActivityField());
+        company.setCode(companyDTO.getCode());
+        company.setName(companyDTO.getName());
+        company.setReference(companyDTO.getReference());
+        return company;
+    }
+
+    private void Update(Company CompanyOld, Company CompanyNew) {
+
+        CompanyOld.setActivityField(CompanyNew.getActivityField());
+        CompanyOld.setCode(CompanyNew.getCode());
+        CompanyOld.setName(CompanyNew.getName());
+        CompanyOld.setReference(CompanyNew.getReference());
+
+
+        societyRepository.save(CompanyOld);
+    }
+
 }

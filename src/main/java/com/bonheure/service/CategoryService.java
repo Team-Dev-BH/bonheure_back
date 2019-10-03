@@ -1,63 +1,55 @@
 package com.bonheure.service;
 
+import com.bonheure.controller.dto.CategoryDTO;
+import com.bonheure.domain.Category;
+import com.bonheure.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bonheure.controller.dto.CategoryDTO;
-import com.bonheure.repository.CategoryRepository;
+
+@Service
+public class CategoryService {
+
+    @Autowired
+    CategoryRepository categoryRespository;
 
 
-     @Service
-     public class CategorieService {
-     @Autowired
+    public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
+        Category category = getCategoryFromDto(categoryDTO);
 
-     CategoryRepository categorieRespository;
-	
-	
-     public CategoryDTO saveCategorie(CategoryDTO categoryDTO)
-{
-    Categorie categorie = getCategFromDto(categoryDTO);
+        categoryRespository.save(category);
 
-    categorieRespository.save(categorie);
+        return categoryDTO;
 
-    return categoryDTO;
+    }
 
-}
+    public CategoryDTO getCategoryByReference(String reference) {
+        Category category = categoryRespository.findByReference(reference);
 
-     public CategoryDTO getCategByReference(String reference)
-{
-    Categorie categorie = categorieRespository.findByReference(reference);
+        CategoryDTO categoryDTO = getCategoryDTOFromCategory(category);
 
-    CategoryDTO categoryDTO =  getCategDTOFromCateg(categorie);
+        return categoryDTO;
+    }
 
-    return categoryDTO;
-}
 
-     
-     
-     
-     
-     
-     
-     
-     private CategoryDTO getCategDTOFromCateg(Categorie categorie) {
-	
-	CategoryDTO categoryDTO =new CategoryDTO();
-	
-	categoryDTO.setName(categorie.getName());
-	categoryDTO.setReference(categorie.getReference());
-	
-	return categoryDTO;
-}
+    private CategoryDTO getCategoryDTOFromCategory(Category category) {
 
-      private Categorie getCategFromDto(CategoryDTO categoryDTO) {
-    	  
-    	  Categorie categorie=new Categorie();
-    	  
-    		categorie.setName(categoryDTO.getName());
-    		categorie.setReference(categoryDTO.getReference());
-    			
-    		return categorie;
-      }
+        CategoryDTO categoryDTO = new CategoryDTO();
+
+        categoryDTO.setName(category.getName());
+        categoryDTO.setReference(category.getReference());
+
+        return categoryDTO;
+    }
+
+    private Category getCategoryFromDto(CategoryDTO categoryDTO) {
+
+        Category category = new Category();
+
+        category.setName(categoryDTO.getName());
+        category.setReference(categoryDTO.getReference());
+
+        return category;
+    }
 
 }

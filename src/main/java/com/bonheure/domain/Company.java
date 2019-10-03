@@ -1,12 +1,6 @@
 package com.bonheure.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.*;
-import javax.persistence.Index;
-import javax.persistence.Table;
 import java.util.Set;
 
 @Entity

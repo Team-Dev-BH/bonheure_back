@@ -1,11 +1,10 @@
 package com.bonheure.repository;
 
+import com.bonheure.domain.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bonheure.domain.Adresse;
+public interface AddressRepository extends JpaRepository<Address, Long> {
 
-public interface AdresseRepository extends JpaRepository<Adresse, Long> {
-	
-	Adresse findByReference(String reference);
+    Address findByReference(String reference);
 
 }

@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class BonheureApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BonheureApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BonheureApplication.class, args);
+    }
 
 }

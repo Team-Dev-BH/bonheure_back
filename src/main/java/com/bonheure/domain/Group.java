@@ -1,58 +1,64 @@
 package com.bonheure.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
+import javax.persistence.*;
 import java.util.Set;
 
-import javax.persistence.*;
-
 @Entity(name = "groupes")
-@Table(name = "groupes",indexes = { @Index(name = "index_group_reference", columnList = "reference", unique = true) })
+@Table(name = "groupes", indexes = {@Index(name = "index_group_reference", columnList = "reference", unique = true)})
 public class Group {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String name;
-	
-	@Column(unique = true)
-	private String reference;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToMany
-	private Set<Prestation> prestations;
+    private String name;
 
-	public Long getId() {
-		return id;
-	}
+    @Column(unique = true)
+    private String reference;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @ManyToOne
+    private Company company;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToMany
+    private Set<Prestation> prestations;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getReference() {
-		return reference;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Set<Prestation> getPrestations() {
-		return prestations;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setPrestations(Set<Prestation> prestations) {
-		this.prestations = prestations;
-	}
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public Set<Prestation> getPrestations() {
+        return prestations;
+    }
+
+    public void setPrestations(Set<Prestation> prestations) {
+        this.prestations = prestations;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 }

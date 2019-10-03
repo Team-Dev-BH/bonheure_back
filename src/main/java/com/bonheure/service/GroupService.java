@@ -1,90 +1,79 @@
 package com.bonheure.service;
 
+import com.bonheure.controller.dto.GroupDTO;
+import com.bonheure.domain.Group;
+import com.bonheure.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bonheure.controller.dto.GroupDTO;
-import com.bonheure.domain.Groupe;
-import com.bonheure.domain.Societe;
-import com.bonheure.repository.GroupRepository;
-
 @Service
-public class GroupeService {
-	
-	@Autowired
+public class GroupService {
+
+    @Autowired
     GroupRepository groupRepository;
-	
-	
-	
 
-    public GroupDTO saveGroupe(GroupDTO groupDTO)
-    {
-    	Groupe groupe = getGroupeFromDto(groupDTO);
 
-    	groupRepository.save(groupe);
+    public GroupDTO saveGroup(GroupDTO groupDTO) {
+        Group group = getGroupFromDto(groupDTO);
+
+        groupRepository.save(group);
 
         return groupDTO;
 
     }
 
-    
-    public GroupDTO getGroupeByReference(String reference)
-    {
-    	Groupe groupe  =  groupRepository.findByReference(reference);
 
-    	GroupDTO groupDTO =  getGroupeDTOFromGroupe(groupe);
+    public GroupDTO getGroupByReference(String reference) {
+        Group group = groupRepository.findByReference(reference);
+
+        GroupDTO groupDTO = getGroupDTOFromGroup(group);
 
         return groupDTO;
     }
-    
-    public void  deleteGroupeByReference(String reference)
-    {
-    	Groupe groupe = groupRepository.findByReference(reference);
-    	groupRepository.delete(groupe);
-    
-    }
-    
-    public GroupDTO updateGroupeByReference(String reference, GroupDTO groupDTO)
-    {
-    	Groupe groupeOld = groupRepository.findByReference(reference);
-    	Groupe groupeNew = getGroupeFromDto(groupDTO);
-    	 
-    	if ( groupeOld != null )
-    	{
-    		Update(groupeOld,groupeNew);
-    	}
-        return groupDTO;
+
+    public void deleteGroupByReference(String reference) {
+        Group group = groupRepository.findByReference(reference);
+        groupRepository.delete(group);
+
     }
 
-    
-    
-    
-    private GroupDTO getGroupeDTOFromGroupe(Groupe groupe) {
+    public GroupDTO updateGroupByReference(String reference, GroupDTO groupDTO) {
+        Group groupOld = groupRepository.findByReference(reference);
+        Group groupNew = getGroupFromDto(groupDTO);
 
-    	GroupDTO groupDTO = new GroupDTO();
-
-    	groupDTO.setName(groupe.getName());
-    	groupDTO.setReference(groupe.getReference());
-       
-       
-        return groupDTO;
+        if (groupOld != null) {
+            Update(groupOld, groupNew);
         }
-    
-    
-    private Groupe getGroupeFromDto(GroupDTO groupDTO) {
-    	Groupe groupe = new Groupe();
-
-         groupe.setName(groupDTO.getName());
-         groupe.setReference(groupDTO.getReference());
-         
-        return groupe;
+        return groupDTO;
     }
-    
-    private void Update(Groupe GroupeOld ,Groupe GroupeNew) {     
-    	
-    	GroupeOld.setName(GroupeNew.getName()); 	
-    	GroupeOld.setReference(GroupeNew.getReference());
-   	
-    	groupRepository.save(GroupeOld);
-   }
+
+
+    private GroupDTO getGroupDTOFromGroup(Group group) {
+
+        GroupDTO groupDTO = new GroupDTO();
+
+        groupDTO.setName(group.getName());
+        groupDTO.setReference(group.getReference());
+
+
+        return groupDTO;
+    }
+
+
+    private Group getGroupFromDto(GroupDTO groupDTO) {
+        Group group = new Group();
+
+        group.setName(groupDTO.getName());
+        group.setReference(groupDTO.getReference());
+
+        return group;
+    }
+
+    private void Update(Group GroupOld, Group GroupNew) {
+
+        GroupOld.setName(GroupNew.getName());
+        GroupOld.setReference(GroupNew.getReference());
+
+        groupRepository.save(GroupOld);
+    }
 }

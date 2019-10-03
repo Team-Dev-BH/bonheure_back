@@ -1,41 +1,33 @@
 package com.bonheure.controller;
 
-import javax.validation.Valid;
-
+import com.bonheure.controller.dto.AddressDTO;
+import com.bonheure.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.bonheure.controller.dto.AddressDTO;
-import com.bonheure.service.AddressService;
+import javax.validation.Valid;
 
 @RestController
-@RequestMapping
-public class AdresseContoller {
+@RequestMapping(value = "address")
+public class AddressController {
 
-	
-	
-	 @Autowired
-	    private AddressService addressService;
-	 
-	 @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	    @ResponseStatus(HttpStatus.OK)
-	    public AddressDTO saveAdresse(@RequestBody @Valid AddressDTO adresse) {
 
-	        return addressService.saveAdresse(adresse);
-	    }
+    @Autowired
+    private AddressService addressService;
 
-	    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	    @ResponseStatus(HttpStatus.OK)
-	    public AddressDTO saveAdresse(@RequestParam(required = false) String reference) {
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public AddressDTO saveAddress(@RequestBody @Valid AddressDTO adresse) {
 
-	        return addressService.getAdresseByReference(reference);
-	    }
+        return addressService.saveAddress(adresse);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public AddressDTO saveAddress(@RequestParam(required = false) String reference) {
+
+        return addressService.getAddressByReference(reference);
+    }
 }

@@ -1,11 +1,13 @@
 package com.bonheure.repository;
 
+import com.bonheure.domain.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bonheure.domain.Societe;
+import java.util.Optional;
 
-public interface SocieteRepository extends JpaRepository<Societe, Long> {
-	
-	Societe findByReference(String reference);
+
+public interface CompanyRepository extends JpaRepository<Company, Long> {
+
+    Optional<Company> findOneByReference(String reference);
 
 }

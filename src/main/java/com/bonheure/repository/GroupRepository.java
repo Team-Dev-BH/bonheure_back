@@ -1,12 +1,12 @@
 package com.bonheure.repository;
 
 
+import com.bonheure.domain.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.bonheure.domain.Groupe;
 
-public interface GroupeRepository extends JpaRepository<Groupe, Long> {
-	
-	Groupe findByReference(String reference);
+public interface GroupRepository extends JpaRepository<Group, Long> {
+
+    Group findByReference(String reference);
 
 }

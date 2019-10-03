@@ -1,94 +1,86 @@
 package com.bonheure.domain;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
-
-import javax.persistence.*;
 
 @Entity
 @DiscriminatorValue("PRESTATAIRE")
 public class Prestataire extends User {
 
-	private String type;
+    @ManyToMany
+    Set<Prestation> prestations;
+    private String type;
+    private String code;
+    private LocalDateTime startActivityDate;
+    private String employeesCount;
+    private String registration;
+    @OneToOne
+    private Address address;
+    @OneToMany
+    private Set<WorkingArea> workingAreas;
 
-	private String code;
+    public String getType() {
+        return type;
+    }
 
-	private LocalDateTime startActivityDate;
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	private String employeesCount;
+    public String getCode() {
+        return code;
+    }
 
-	private String registration;
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	@OneToOne
-	private Address address;
+    public LocalDateTime getStartActivityDate() {
+        return startActivityDate;
+    }
 
-	@OneToMany
-	private Set<WorkingArea> workingAreas;
+    public void setStartActivityDate(LocalDateTime startActivityDate) {
+        this.startActivityDate = startActivityDate;
+    }
 
-	@ManyToMany
-	Set<Prestation> prestations;
+    public String getEmployeesCount() {
+        return employeesCount;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setEmployeesCount(String employeesCount) {
+        this.employeesCount = employeesCount;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getRegistration() {
+        return registration;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setRegistration(String registration) {
+        this.registration = registration;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public Address getAddress() {
+        return address;
+    }
 
-	public LocalDateTime getStartActivityDate() {
-		return startActivityDate;
-	}
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-	public void setStartActivityDate(LocalDateTime startActivityDate) {
-		this.startActivityDate = startActivityDate;
-	}
+    public Set<Prestation> getPrestations() {
+        return prestations;
+    }
 
-	public String getEmployeesCount() {
-		return employeesCount;
-	}
+    public void setPrestations(Set<Prestation> prestations) {
+        this.prestations = prestations;
+    }
 
-	public void setEmployeesCount(String employeesCount) {
-		this.employeesCount = employeesCount;
-	}
+    public Set<WorkingArea> getWorkingAreas() {
+        return workingAreas;
+    }
 
-	public String getRegistration() {
-		return registration;
-	}
-
-	public void setRegistration(String registration) {
-		this.registration = registration;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
-	public Set<Prestation> getPrestations() {
-		return prestations;
-	}
-
-	public void setPrestations(Set<Prestation> prestations) {
-		this.prestations = prestations;
-	}
-
-	public Set<WorkingArea> getWorkingAreas() {
-		return workingAreas;
-	}
-
-	public void setWorkingAreas(Set<WorkingArea> workingAreas) {
-		this.workingAreas = workingAreas;
-	}
+    public void setWorkingAreas(Set<WorkingArea> workingAreas) {
+        this.workingAreas = workingAreas;
+    }
 }

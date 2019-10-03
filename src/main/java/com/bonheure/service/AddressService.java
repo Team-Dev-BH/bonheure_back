@@ -1,76 +1,67 @@
 package com.bonheure.service;
 
+import com.bonheure.controller.dto.AddressDTO;
+import com.bonheure.domain.Address;
+import com.bonheure.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bonheure.controller.dto.AdresseDTO;
-import com.bonheure.domain.Adresse;
-import com.bonheure.repository.AdresseRepository;
-
 @Service
-public class AdresseService {
-	
-	  @Autowired
-	  AdresseRepository adresseRepository;
-	 
-	
+public class AddressService {
+
+    @Autowired
+    AddressRepository addressRepository;
 
 
-	    public AdresseDTO saveAdresse(AdresseDTO adresseDTO)
-	    {
-	        Adresse adresse = getAdresseFromDto(adresseDTO);
+    public AddressDTO saveAddress(AddressDTO addressDTO) {
+        Address address = getAddressFromDto(addressDTO);
 
-	        adresseRepository.save(adresse);
-	        
-
-	        return adresseDTO;
-
-	    }
-
-	    public AdresseDTO getAdresseByReference(String reference)
-	    {
-	        Adresse adresse = adresseRepository.findByReference(reference);
-
-	        AdresseDTO adresseDTO =  getAdresseDTOFromAdresse(adresse);
-
-	        return adresseDTO;
-	    }
-	    
-	    
-	    
-	    private AdresseDTO getAdresseDTOFromAdresse(Adresse adresse) {
-
-	        AdresseDTO adresseDTO = new AdresseDTO();
-
-	          
-	        
-	          adresseDTO.setPostalCode(adresse.getPostalCode());
-	          adresseDTO.setReference(adresse.getReference());
-	          adresseDTO.setRegion(adresse.getRegion());
-	          adresseDTO.setStreet(adresse.getStreet());
-	          adresseDTO.setType(adresse.getType());
-	          
-	          
-	        return adresseDTO;    }
-	    
-	    
-	    private Adresse getAdresseFromDto(AdresseDTO adresseDTO) {
-	        Adresse adresse = new Adresse();
-	        
-	         
-	        adresse.setPostalCode(adresseDTO.getPostalCode());
-	        adresse.setReference(adresseDTO.getReference());
-	        adresse.setRegion(adresseDTO.getRegion());
-	        adresse.setStreet(adresseDTO.getStreet());
-	        adresse.setType(adresseDTO.getType());
-
-	        
-	          
+        addressRepository.save(address);
 
 
-	        return adresse;
+        return addressDTO;
 
-	   
-	    }
+    }
+
+    public AddressDTO getAddressByReference(String reference) {
+        Address address = addressRepository.findByReference(reference);
+
+        AddressDTO addressDTO = getAddressDTOFromAddress(address);
+
+        return addressDTO;
+    }
+
+
+    private AddressDTO getAddressDTOFromAddress(Address address) {
+
+        AddressDTO addressDTO = new AddressDTO();
+
+
+        addressDTO.setPostalCode(address.getPostalCode());
+        addressDTO.setReference(address.getReference());
+        addressDTO.setRegion(address.getRegion());
+        addressDTO.setStreet(address.getStreet());
+        addressDTO.setType(address.getType());
+
+
+        return addressDTO;
+    }
+
+
+    private Address getAddressFromDto(AddressDTO addressDTO) {
+        Address address = new Address();
+
+
+        address.setPostalCode(addressDTO.getPostalCode());
+        address.setReference(addressDTO.getReference());
+        address.setRegion(addressDTO.getRegion());
+        address.setStreet(addressDTO.getStreet());
+        address.setType(addressDTO.getType());
+
+
+        return address;
+
+
+    }
 
 }

@@ -48,13 +48,6 @@ public abstract class ApiMapper {
                     target = "prestations")})
     public abstract void updateBeanFromDto(GroupDTO dto, @MappingTarget Group bean);
 
-    public static void main(String[] args) {
-        CompanyRepository companyRepository;
-
-
-    }
-
-
     @Mappings({
             @Mapping(source = "company.reference", target = "companyReference"),
             @Mapping(expression = "java(bean.getPrestations().stream().map(prestation -> prestation.getReference()).collect(Collectors.toSet()))",

@@ -1,64 +1,50 @@
 package com.bonheure.controller;
 
-import javax.validation.Valid;
-
+import com.bonheure.controller.dto.GroupDTO;
+import com.bonheure.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.bonheure.controller.dto.GroupDTO;
-import com.bonheure.service.GroupService;
+import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value="groupes")
-public class GroupeController {
-	
-	@Autowired
-	private GroupService groupService;
-	
-	
-	
-	
-	
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public GroupDTO saveGroupe(@RequestBody @Valid GroupDTO groupe) {
+@RequestMapping(value = "groups")
+public class GroupController {
 
-        return groupService.saveGroupe(groupe);
+    @Autowired
+    private GroupService groupService;
+
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public GroupDTO saveGroup(@RequestBody @Valid GroupDTO group) {
+
+        return groupService.saveGroup(group);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public GroupDTO getSociete(@RequestParam(required = false) String reference) {
-        
-        return groupService.getGroupeByReference(reference);
+    public GroupDTO getGroup(@RequestParam(required = false) String reference) {
+
+        return groupService.getGroupByReference(reference);
     }
 
-    
-    
+
     @DeleteMapping("/{reference}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteGroupe(@PathVariable(value="reference") String reference ) {
-    	groupService.deleteGroupeByReference(reference);
+    public void deleteGroup(@PathVariable(value = "reference") String reference) {
+        groupService.deleteGroupByReference(reference);
     }
-    
-    
+
+
     @PutMapping("/{reference}")
     @ResponseStatus(HttpStatus.OK)
-    public GroupDTO updateGroupe(@PathVariable(value="reference") String reference, @Valid @RequestBody GroupDTO groupe) {
-    	
-    	
-    	return groupService.updateGroupeByReference(reference, groupe);
+    public GroupDTO updateGroup(@PathVariable(value = "reference") String reference, @Valid @RequestBody GroupDTO group) {
+
+
+        return groupService.updateGroupByReference(reference, group);
     }
 
 }

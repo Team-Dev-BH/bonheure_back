@@ -1,13 +1,22 @@
 package com.bonheure.controller.dto;
 
+import javax.persistence.Column;
+import javax.persistence.UniqueConstraint;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.UniqueElements;
+
+import com.bonheure.domain.Role;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserDTO {
 
-
+	@Column(unique = true)
     private String reference;
 
     @NotNull
@@ -31,13 +40,32 @@ public class UserDTO {
 
     private Boolean activated;
 
-    private String role;
+	private String role;
 
-    public String getReference() {
-        return reference;
-    }
+	
 
-    public void setReference(String reference) {
+	
+
+
+	/**
+	 * @return the role
+	 */
+	public String getRole() {
+		return role;
+	}
+
+	/**
+	 * @param role the role to set
+	 */
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
         this.reference = reference;
     }
 
@@ -113,11 +141,8 @@ public class UserDTO {
         this.activated = activated;
     }
 
-    public String getRole() {
-        return role;
-    }
+	
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	
+  
 }

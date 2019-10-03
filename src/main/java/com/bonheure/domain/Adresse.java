@@ -26,8 +26,38 @@ public class Adresse {
 
 	@ManyToOne
 	private Societe societe;
+	@ManyToOne
+	private User user;
 
 	
+	/**
+	 * @return the societe
+	 */
+	public Societe getSociete() {
+		return societe;
+	}
+
+	/**
+	 * @param societe the societe to set
+	 */
+	public void setSociete(Societe societe) {
+		this.societe = societe;
+	}
+
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public Long getId() {
 		return id;
 	}

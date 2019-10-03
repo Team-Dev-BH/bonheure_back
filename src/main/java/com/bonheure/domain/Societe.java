@@ -16,7 +16,6 @@ public class Societe {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
 	private String reference;
 
 	private String code;

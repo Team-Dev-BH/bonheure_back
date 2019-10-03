@@ -3,43 +3,66 @@ package com.bonheure.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(indexes = {@Index(name = "index_user_reference", columnList = "reference", unique = true)})
+@Table(indexes = { @Index(name = "index_user_reference", columnList = "reference", unique = true) })
+
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(unique = true)
+   
+	@Column(unique=true)
 	private String reference;
+
 
 	private String firstName;
 
 	private String lastName;
 
 	private String email;
-	
+
 	private String mobileNumber;
-	
+
 	private String password;
-	
+
 	private LocalDateTime creationDate;
-	
+
 	private LocalDateTime modificationDate;
-	
+
 	private LocalDateTime activationDate;
-	
+
 	private Boolean activated;
+
+	@ManyToOne
+	private  Role role;
 	
-	@Enumerated(EnumType.STRING)
-	private Role role;
+	
+
+
+	
+	/**
+	 * @return the role
+	 */
+	public Role getRole() {
+		return role;
+	}
+
+	/**
+	 * @param role the role to set
+	 */
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	public Long getId() {
 		return id;
@@ -80,8 +103,6 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	
 
 	public String getMobileNumber() {
 		return mobileNumber;
@@ -131,14 +152,12 @@ public class User {
 		this.activated = activated;
 	}
 
+	
+	
+	
 
-	public Role getRole() {
-		return role;
-	}
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+	
 
 	@Override
 	public int hashCode() {
@@ -151,12 +170,5 @@ public class User {
 		// TODO Auto-generated method stub
 		return super.equals(obj);
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

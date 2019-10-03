@@ -21,7 +21,7 @@ public class Client extends User {
 
 	private String companyRef;
 
-	private String function;
+	private String position;
 	private LocalDateTime birthDate;
 
 	@ManyToOne(cascade = CascadeType.REMOVE)
@@ -30,36 +30,76 @@ public class Client extends User {
 	@ManyToMany
 	Set<Groupe> groupes;
 
-	public Societe getSociete() {
-		return societe;
-	}
-
-	public void setSociete(Societe societe) {
-		this.societe = societe;
-	}
-
+	/**
+	 * @return the companyRef
+	 */
 	public String getCompanyRef() {
 		return companyRef;
 	}
 
+	/**
+	 * @param companyRef the companyRef to set
+	 */
 	public void setCompanyRef(String companyRef) {
 		this.companyRef = companyRef;
 	}
 
-	public String getFunction() {
-		return function;
+	/**
+	 * @return the position
+	 */
+	public String getPosition() {
+		return position;
 	}
 
-	public void setFunction(String function) {
-		this.function = function;
+	/**
+	 * @param position the position to set
+	 */
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
+	/**
+	 * @return the birthDate
+	 */
 	public LocalDateTime getBirthDate() {
 		return birthDate;
 	}
 
+	/**
+	 * @param birthDate the birthDate to set
+	 */
 	public void setBirthDate(LocalDateTime birthDate) {
 		this.birthDate = birthDate;
 	}
+
+	/**
+	 * @return the societe
+	 */
+	public Societe getSociete() {
+		return societe;
+	}
+
+	/**
+	 * @param societe the societe to set
+	 */
+	public void setSociete(Societe societe) {
+		this.societe = societe;
+	}
+
+	/**
+	 * @return the groupes
+	 */
+	public Set<Groupe> getGroupes() {
+		return groupes;
+	}
+
+	/**
+	 * @param groupes the groupes to set
+	 */
+	public void setGroupes(Set<Groupe> groupes) {
+		this.groupes = groupes;
+	}
+
+
 
 }

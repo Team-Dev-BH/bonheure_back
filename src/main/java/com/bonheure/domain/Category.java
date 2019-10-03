@@ -12,8 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(indexes = { @Index(name = "index_categorie_reference", columnList = "reference", unique = true) })
-public class Categorie {
+@Table(indexes = { @Index(name = "index_category_reference", columnList = "reference", unique = true) })
+public class Category {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,27 @@ public class Categorie {
 
 	private String name;
 
-	@ManyToMany
-	Set<Prestation> prestations;
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

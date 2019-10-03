@@ -3,26 +3,27 @@ package com.bonheure.domain;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 
 @Entity
-@PrimaryKeyJoinColumn(name = "id")
+@DiscriminatorValue("PRESTATAIRE")
 public class Prestataire extends User {
 
 	private String type;
 
 	private String code;
 
-	private LocalDateTime entActvDate;
+	private LocalDateTime startActivityDate;
 
-	private String effective;
+	private String employeesCount;
 
 	private String registration;
+
+	@OneToOne
+	private Address address;
+
+	@OneToMany
+	private Set<WorkingArea> workingAreas;
 
 	@ManyToMany
 	Set<Prestation> prestations;
@@ -43,20 +44,20 @@ public class Prestataire extends User {
 		this.code = code;
 	}
 
-	public LocalDateTime getEntActvDate() {
-		return entActvDate;
+	public LocalDateTime getStartActivityDate() {
+		return startActivityDate;
 	}
 
-	public void setEntActvDate(LocalDateTime entActvDate) {
-		this.entActvDate = entActvDate;
+	public void setStartActivityDate(LocalDateTime startActivityDate) {
+		this.startActivityDate = startActivityDate;
 	}
 
-	public String getEffective() {
-		return effective;
+	public String getEmployeesCount() {
+		return employeesCount;
 	}
 
-	public void setEffective(String effective) {
-		this.effective = effective;
+	public void setEmployeesCount(String employeesCount) {
+		this.employeesCount = employeesCount;
 	}
 
 	public String getRegistration() {
@@ -67,4 +68,27 @@ public class Prestataire extends User {
 		this.registration = registration;
 	}
 
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Set<Prestation> getPrestations() {
+		return prestations;
+	}
+
+	public void setPrestations(Set<Prestation> prestations) {
+		this.prestations = prestations;
+	}
+
+	public Set<WorkingArea> getWorkingAreas() {
+		return workingAreas;
+	}
+
+	public void setWorkingAreas(Set<WorkingArea> workingAreas) {
+		this.workingAreas = workingAreas;
+	}
 }

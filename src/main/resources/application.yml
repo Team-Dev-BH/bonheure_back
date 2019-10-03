@@ -9,11 +9,12 @@ spring:
         format_sql: false
         cache.use_query_cache: false
         generate_statistics: false
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
     url: jdbc:mysql://localhost:3306/bonheure?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
     name: bonheure
     username: root
     type: com.zaxxer.hikari.HikariDataSource
+    password: root
   application:
     name: service-streamlink

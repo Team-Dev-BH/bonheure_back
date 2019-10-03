@@ -1,7 +1,8 @@
 package com.bonheure.domain;
 
 public enum Role {
+//		implements GrantedAuthority {
 
-	SuperAdmin, Client, Presataire
+	SUPERADMIN, CLIENT, PRESTATAIRE
 
 }

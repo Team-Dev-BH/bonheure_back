@@ -1,5 +1,9 @@
 package com.bonheure.domain;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -11,6 +15,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(indexes = {@Index(name = "index_user_reference", columnList = "reference", unique = true)})
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name="type",discriminatorType = DiscriminatorType.STRING)
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 	
 	@Id
@@ -29,9 +35,13 @@ public class User {
 	private String mobileNumber;
 	
 	private String password;
-	
+
+	private LocalDateTime birthDate;
+
+	@CreatedDate
 	private LocalDateTime creationDate;
-	
+
+	@LastModifiedDate
 	private LocalDateTime modificationDate;
 	
 	private LocalDateTime activationDate;
@@ -131,6 +141,13 @@ public class User {
 		this.activated = activated;
 	}
 
+	public LocalDateTime getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(LocalDateTime birthDate) {
+		this.birthDate = birthDate;
+	}
 
 	public Role getRole() {
 		return role;

@@ -1,18 +1,10 @@
 package com.bonheure.domain;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(indexes = { @Index(name = "index_prestation_reference", columnList = "reference", unique = true) })
@@ -24,25 +16,17 @@ public class Prestation {
 	@Column(unique = true)
 	private String reference;
 
-	private String parentRefPrest;
-
 	private String name;
 
-	private String tagList;
-
-	@ManyToMany(mappedBy = "prestations")
-	Set<Prestataire> prestataires;
-
-	@ManyToMany(mappedBy = "prestations")
-	Set<Categorie> categories;
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> tags;
 
 	@ManyToMany
-	Set<Groupe> groupes;
+	private Set<Category> categories;
 
 	@ManyToOne
 	private Prestation parent;
-	@OneToMany(mappedBy = "parent")
-	private Collection<Prestation> children;
+
 
 	public long getId() {
 		return id;
@@ -50,22 +34,6 @@ public class Prestation {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getParentRefPrest() {
-		return parentRefPrest;
-	}
-
-	public void setParentRefPrest(String parentRefPrest) {
-		this.parentRefPrest = parentRefPrest;
-	}
-
-	public String getTagList() {
-		return tagList;
-	}
-
-	public void setTagList(String tagList) {
-		this.tagList = tagList;
 	}
 
 	public String getReference() {
@@ -84,4 +52,27 @@ public class Prestation {
 		this.name = name;
 	}
 
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
+	public Prestation getParent() {
+		return parent;
+	}
+
+	public void setParent(Prestation parent) {
+		this.parent = parent;
+	}
 }

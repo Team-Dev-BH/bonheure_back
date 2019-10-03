@@ -3,55 +3,39 @@ package com.bonheure.domain;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Entity
-@PrimaryKeyJoinColumn(name = "id")
+@Entity(name = "clients")
+@DiscriminatorValue("CLIENT")
 public class Client extends User {
 
-	private String companyRef;
+	private String position;
 
-	private String function;
 	private LocalDateTime birthDate;
 
 	@ManyToOne(cascade = CascadeType.REMOVE)
-	private Societe societe;
+	private Company company;
 
-	@ManyToMany
-	Set<Groupe> groupes;
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<Group> groups;
 
-	public Societe getSociete() {
-		return societe;
+	@OneToOne
+	private Address address;
+
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setSociete(Societe societe) {
-		this.societe = societe;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
-	public String getCompanyRef() {
-		return companyRef;
+	public String getPosition() {
+		return position;
 	}
 
-	public void setCompanyRef(String companyRef) {
-		this.companyRef = companyRef;
-	}
-
-	public String getFunction() {
-		return function;
-	}
-
-	public void setFunction(String function) {
-		this.function = function;
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	public LocalDateTime getBirthDate() {
@@ -61,5 +45,22 @@ public class Client extends User {
 	public void setBirthDate(LocalDateTime birthDate) {
 		this.birthDate = birthDate;
 	}
+
+	public Set<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<Group> groups) {
+		this.groups = groups;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 
 }

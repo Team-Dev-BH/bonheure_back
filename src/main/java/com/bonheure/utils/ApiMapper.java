@@ -3,8 +3,10 @@ package com.bonheure.utils;
 
 import com.bonheure.controller.dto.GroupDTO;
 import com.bonheure.controller.dto.UserDTO;
+import com.bonheure.controller.dto.WorkingAreaDTO;
 import com.bonheure.domain.Group;
 import com.bonheure.domain.User;
+import com.bonheure.domain.WorkingArea;
 import com.bonheure.repository.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -36,6 +38,9 @@ public abstract class ApiMapper {
 
     @Autowired
     PrestationRepository prestationRepository;
+    
+    @Autowired
+    WorkingAreaRepository workingAreaRepository;
 
     //group
     @Mappings({@Mapping(target = "reference", ignore = true),
@@ -81,5 +86,20 @@ public abstract class ApiMapper {
             @Mapping(target = "modificationDate", ignore = true)})
     public abstract User fromDTOToBean(UserDTO dto);
 
+    
+    
+    //Working Area
+    
+    @Mappings({@Mapping(target = "reference", ignore = true)})
+        public abstract void updateBeanFromDto(WorkingAreaDTO dto, @MappingTarget WorkingArea bean);
 
+    @Mappings({})
+    public abstract WorkingAreaDTO fromBeanToDTO(WorkingArea bean);
+    
+    @Mappings({
+        @Mapping(target = "region", ignore = true)})
+    
+    public abstract WorkingArea fromDTOToBean(WorkingAreaDTO dto);
+
+    
 }

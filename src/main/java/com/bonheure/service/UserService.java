@@ -56,9 +56,11 @@ public class UserService {
 
         //TODO throw exception if not found
         User oldUser = userRepository.findOneByReference(reference).orElse(null);
+       
 
         if (oldUser != null) {
             apiMapper.updateBeanFromDto(userDTO, oldUser);
+            userRepository.save(oldUser);
         }
         return userDTO;
     }

@@ -35,7 +35,7 @@ public class GroupController {
     @DeleteMapping("/{reference}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteGroup(@PathVariable(value = "reference") String reference) {
-        groupService.deleteGroupByReference(reference);
+        groupService.deleteUGroupByReference(reference);
     }
 
 
@@ -44,7 +44,7 @@ public class GroupController {
     public GroupDTO updateGroup(@PathVariable(value = "reference") String reference, @Valid @RequestBody GroupDTO group) {
 
 
-        return groupService.updateGroupByReference(reference, group);
+        return groupService.updateUGroupByReference(reference, group);
     }
 
 }

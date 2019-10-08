@@ -1,6 +1,7 @@
 package com.bonheure.controller;
 
 import com.bonheure.controller.dto.CategoryDTO;
+import com.bonheure.controller.dto.WorkingAreaDTO;
 import com.bonheure.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,19 @@ public class CategoryController {
         return categoryService.getCategoryByReference(reference);
     }
 
+    
+
+    @DeleteMapping("/{reference}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteCategorie(@PathVariable(value = "reference") String reference) {
+    	categoryService.deleteCategoryByReference(reference);
+    }
+
+    @PutMapping("/{reference}")
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryDTO updateCategorie(@PathVariable(value = "reference") String reference, @Valid @RequestBody CategoryDTO categorie) {
+        return categoryService.updateCategoryByReference(reference, categorie);
+    }
+	
 
 }

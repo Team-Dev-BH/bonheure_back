@@ -1,8 +1,14 @@
 package com.bonheure.service;
 
 import com.bonheure.controller.dto.CategoryDTO;
+import com.bonheure.controller.dto.WorkingAreaDTO;
 import com.bonheure.domain.Category;
+import com.bonheure.domain.WorkingArea;
 import com.bonheure.repository.CategoryRepository;
+import com.bonheure.utils.ApiMapper;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,43 +19,52 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRespository;
 
-
+    @Autowired
+    private ApiMapper apiMapper;
+    
+    
+    
     public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
-        Category category = getCategoryFromDto(categoryDTO);
 
+    	categoryDTO.setReference(UUID.randomUUID().toString());
+    	Category category = apiMapper.fromDTOToBean(categoryDTO);
         categoryRespository.save(category);
 
         return categoryDTO;
 
     }
-
+    
+    
     public CategoryDTO getCategoryByReference(String reference) {
-        Category category = categoryRespository.findByReference(reference);
+    	Category category = categoryRespository.findOneByReference(reference).
+                orElse(null);
 
-        CategoryDTO categoryDTO = getCategoryDTOFromCategory(category);
-
-        return categoryDTO;
-    }
-
-
-    private CategoryDTO getCategoryDTOFromCategory(Category category) {
-
-        CategoryDTO categoryDTO = new CategoryDTO();
-
-        categoryDTO.setName(category.getName());
-        categoryDTO.setReference(category.getReference());
+        if (category == null)
+            return null;
+        CategoryDTO categoryDTO = apiMapper.fromBeanToDTO(category);
 
         return categoryDTO;
     }
+    
+    
+    public void deleteCategoryByReference(String reference) {
+    	Category category = categoryRespository.findOneByReference(reference).
+                orElse(null);
 
-    private Category getCategoryFromDto(CategoryDTO categoryDTO) {
 
-        Category category = new Category();
+       categoryRespository.delete(category);
 
-        category.setName(categoryDTO.getName());
-        category.setReference(categoryDTO.getReference());
-
-        return category;
     }
+    
+    public CategoryDTO updateCategoryByReference(String reference, CategoryDTO categoryDTO) {
 
+        //TODO throw exception if not found
+    	Category oldCategory= categoryRespository.findOneByReference(reference).orElse(null);
+
+        if (oldCategory != null) {
+            apiMapper.updateBeanFromDto(categoryDTO, oldCategory);
+            categoryRespository.save(oldCategory);
+        }
+        return categoryDTO;
+    }
 }

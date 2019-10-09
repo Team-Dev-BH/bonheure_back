@@ -32,17 +32,17 @@ public class CompanyController {
     }
 
 
-    @DeleteMapping("/{reference}")
+     @DeleteMapping("/{reference}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCompany(@PathVariable(value = "reference") String reference) {
         companyService.deleteCompanyByReference(reference);
-    }
+    } 
 
 
-    @PutMapping("/{reference}")
+     @PutMapping("/{reference}")
     @ResponseStatus(HttpStatus.OK)
     public CompanyDTO updateCompany(@PathVariable(value = "reference") String reference, @Valid @RequestBody CompanyDTO company) {
         return companyService.updateCompanyByReference(reference, company);
-    }
+    } 
 
 }

@@ -3,11 +3,15 @@ package com.bonheure.utils;
 
 import com.bonheure.controller.dto.AddressDTO;
 import com.bonheure.controller.dto.CategoryDTO;
+import com.bonheure.controller.dto.ClientDTO;
+import com.bonheure.controller.dto.CompanyDTO;
 import com.bonheure.controller.dto.GroupDTO;
 import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.controller.dto.WorkingAreaDTO;
 import com.bonheure.domain.Address;
 import com.bonheure.domain.Category;
+import com.bonheure.domain.Client;
+import com.bonheure.domain.Company;
 import com.bonheure.domain.Group;
 import com.bonheure.domain.User;
 import com.bonheure.domain.WorkingArea;
@@ -132,4 +136,50 @@ public abstract class ApiMapper {
     @Mappings({})
        public abstract Address  fromDTOToBean(AddressDTO dto);
     
+    
+  //client
+  	@Mappings({ @Mapping(source = "address.reference", target = "adressReference"),
+  			@Mapping(source = "company.reference", target = "companyReference"),
+  			@Mapping(expression = "java(bean.getGroups().stream().map(group -> group.getReference()).collect(Collectors.toSet()))", target = "groupReferences"), })
+  	public abstract ClientDTO fromBeanToDTO(Client bean);
+
+  	@Mappings({ @Mapping(target = "creationDate", ignore = true), @Mapping(target = "modificationDate", ignore = true),
+  			@Mapping(target = "address", expression = "java(addressRepository.findOneByReference(dto.getAdressReference()).orElse(null))"),
+  			@Mapping(target = "company", expression = "java(companyRepository.findOneByReference(dto.getCompanyReference()).orElse(null))"),
+  			@Mapping(expression = "java(dto.getGroupReferences().stream()"
+  					+ ".map(reference -> groupRepository.findOneByReference(reference).orElse(null) )"
+  					+ ".filter(group -> group != null)" + ".collect(Collectors.toSet()))", target = "groups"), })
+  	public abstract Client fromDTOToBean(ClientDTO dto);
+
+  	@Mappings({
+
+  			@Mapping(target = "reference", ignore = true), @Mapping(target = "creationDate", ignore = true),
+  			@Mapping(target = "modificationDate", ignore = true),
+  			@Mapping(target = "company", expression = "java(companyRepository.findOneByReference(dto.getCompanyReference()).orElse(null))"),
+  			@Mapping(expression = "java(dto.getGroupReferences().stream()"
+  					+ ".map(reference -> groupRepository.findOneByReference(reference).orElse(null))"
+  					+ ".filter(group -> group != null)" + ".collect(Collectors.toSet()))", target = "groups") })
+  	public abstract void updateBeanFromDto(ClientDTO dto, @MappingTarget Client bean);
+  	
+ // company
+
+ 	@Mappings({
+ 			@Mapping(target = "principalAddress", expression = "java(addressRepository.findOneByReference(dto.getPrincipalAddressReference())."
+ 					+ "orElse(null))"),
+ 			@Mapping(expression = "java(dto.getAddressesReferences().stream()"
+ 					+ ".map(reference -> addressRepository.findOneByReference(reference).orElse(null))"
+ 					+ ".filter(address -> address != null)" + ".collect(Collectors.toSet()))", target = "addresses") })
+ 	public abstract Company fromDTOToBean(CompanyDTO dto);
+
+ 	@Mappings({ @Mapping(source = "principalAddress.reference", target = "principalAddressReference"),
+ 			@Mapping(expression = "java(bean.getAddresses().stream().map(Address -> Address.getReference()).collect(Collectors.toSet()))", target = "addressesReferences") })
+ 	public abstract CompanyDTO fromBeanToDTO(Company bean);
+
+ 	@Mappings({ @Mapping(target = "reference", ignore = true),
+ 			@Mapping(target = "principalAddress", expression = "java(addressRepository.findOneByReference(dto.getPrincipalAddressReference()).orElse(null))"),
+ 			@Mapping(expression = "java(dto.getAddressesReferences().stream()"
+ 					+ ".map(reference -> addressRepository.findOneByReference(reference).orElse(null))"
+ 					+ ".filter(address -> address != null)" + ".collect(Collectors.toSet()))", target = "addresses") })
+ 	public abstract void updateBeanFromDto(CompanyDTO dto, @MappingTarget Company bean);
+
 }

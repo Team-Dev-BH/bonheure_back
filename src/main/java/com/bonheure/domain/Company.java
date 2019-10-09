@@ -14,7 +14,7 @@ public class Company {
     @Column(unique = true)
     private String reference;
 
-    @OneToOne
+   @OneToOne
     private Address principalAddress;
 
     @OneToMany
@@ -68,14 +68,14 @@ public class Company {
         this.activityField = activityField;
     }
 
-    public Address getPrincipalAddress() {
+   public Address getPrincipalAddress() {
         return principalAddress;
     }
 
     public void setPrincipalAddress(Address principalAddress) {
         this.principalAddress = principalAddress;
     }
-
+    
     public Set<Address> getAddresses() {
         return addresses;
     }

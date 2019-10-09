@@ -33,18 +33,18 @@ public class ClientController {
     }
 
 
-    @DeleteMapping("/{reference}")
+     @DeleteMapping("/{reference}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteClint(@PathVariable(value = "reference") String reference) {
+    public void deleteClient(@PathVariable(value = "reference") String reference) {
         clientService.deleteClientByReference(reference);
     }
 
 
-    @PutMapping("/{reference}")
+     @PutMapping("/{reference}")
     @ResponseStatus(HttpStatus.OK)
     public ClientDTO updateClient(@PathVariable(value = "reference") String reference, @Valid @RequestBody ClientDTO client) {
         return clientService.updateClientByReference(reference, client);
-    }
+    } 
 
 
 }

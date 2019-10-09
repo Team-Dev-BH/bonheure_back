@@ -1,86 +1,100 @@
 package com.bonheure.domain;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import java.util.Set;
 
 @Entity
 @DiscriminatorValue("PRESTATAIRE")
-public class Prestataire extends User {
+public class Prestataire extends User implements Serializable {
 
-    @ManyToMany
-    Set<Prestation> prestations;
-    private String type;
-    private String code;
-    private LocalDateTime startActivityDate;
-    private String employeesCount;
-    private String registration;
-    @OneToOne
-    private Address address;
-    @OneToMany
-    private Set<WorkingArea> workingAreas;
+	private String type;
 
-    public String getType() {
-        return type;
-    }
+	private String code;
+	 
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	 private LocalDateTime startActivityDate;
 
-    public String getCode() {
-        return code;
-    }
+	private int employeesCount;
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	private String registration;
 
-    public LocalDateTime getStartActivityDate() {
-        return startActivityDate;
-    }
+	@ManyToMany
+	private Set<Prestation> prestations;
 
-    public void setStartActivityDate(LocalDateTime startActivityDate) {
-        this.startActivityDate = startActivityDate;
-    }
+	@OneToMany
+	private Set<WorkingArea> workingAreas;
 
-    public String getEmployeesCount() {
-        return employeesCount;
-    }
+	@OneToOne
+	private Address address;
 
-    public void setEmployeesCount(String employeesCount) {
-        this.employeesCount = employeesCount;
-    }
+	public Address getAddress() {
+		return address;
+	}
 
-    public String getRegistration() {
-        return registration;
-    }
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
-    public void setRegistration(String registration) {
-        this.registration = registration;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public Address getAddress() {
-        return address;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public Set<Prestation> getPrestations() {
-        return prestations;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setPrestations(Set<Prestation> prestations) {
-        this.prestations = prestations;
-    }
+	public LocalDateTime getStartActivityDate() {
+		return startActivityDate;
+	}
 
-    public Set<WorkingArea> getWorkingAreas() {
-        return workingAreas;
-    }
+	public void setStartActivityDate(LocalDateTime startActivityDate) {
+		this.startActivityDate = startActivityDate;
+	}
 
-    public void setWorkingAreas(Set<WorkingArea> workingAreas) {
-        this.workingAreas = workingAreas;
-    }
+	public String getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(String registration) {
+		this.registration = registration;
+	}
+
+	public int getEmployeesCount() {
+		return employeesCount;
+	}
+
+	public void setEmployeesCount(int employeesCount) {
+		this.employeesCount = employeesCount;
+	}
+
+	public Set<Prestation> getPrestations() {
+		return prestations;
+	}
+
+	public void setPrestations(Set<Prestation> prestations) {
+		this.prestations = prestations;
+	}
+
+	public Set<WorkingArea> getWorkingAreas() {
+		return workingAreas;
+	}
+
+	public void setWorkingAreas(Set<WorkingArea> workingAreas) {
+		this.workingAreas = workingAreas;
+	}
+
 }

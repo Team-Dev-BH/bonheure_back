@@ -10,14 +10,16 @@ public class Client extends User {
 	
 	private String position;
 
-     @ManyToOne(cascade = CascadeType.REMOVE)
-    private Company company; 
+
+  @ManyToOne(cascade = CascadeType.REMOVE)
+  private Company company; 
     
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<Group> groups;
 
-     @OneToOne
-     private Address address; 
+
+  @OneToOne
+  private Address address; 
 
 	 public Company getCompany() {
 		return company;
@@ -40,6 +42,8 @@ public class Client extends User {
 	public String getPosition() {
 		return position;
 	}
+
+
 
 	public void setPosition(String position) {
 		this.position = position;

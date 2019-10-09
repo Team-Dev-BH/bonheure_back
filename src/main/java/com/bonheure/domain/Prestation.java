@@ -1,12 +1,14 @@
 package com.bonheure.domain;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(indexes = {@Index(name = "index_prestation_reference", columnList = "reference", unique = true)})
-public class Prestation {
+public class Prestation  implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

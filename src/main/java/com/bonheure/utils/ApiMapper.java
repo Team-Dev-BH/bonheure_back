@@ -6,6 +6,8 @@ import com.bonheure.controller.dto.CategoryDTO;
 import com.bonheure.controller.dto.ClientDTO;
 import com.bonheure.controller.dto.CompanyDTO;
 import com.bonheure.controller.dto.GroupDTO;
+import com.bonheure.controller.dto.PrestataireDTO;
+import com.bonheure.controller.dto.PrestationDTO;
 import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.controller.dto.WorkingAreaDTO;
 import com.bonheure.domain.Address;
@@ -13,6 +15,8 @@ import com.bonheure.domain.Category;
 import com.bonheure.domain.Client;
 import com.bonheure.domain.Company;
 import com.bonheure.domain.Group;
+import com.bonheure.domain.Prestataire;
+import com.bonheure.domain.Prestation;
 import com.bonheure.domain.User;
 import com.bonheure.domain.WorkingArea;
 import com.bonheure.repository.*;
@@ -104,8 +108,7 @@ public abstract class ApiMapper {
     @Mappings({})
     public abstract WorkingAreaDTO fromBeanToDTO(WorkingArea bean);
     
-    @Mappings({
-        @Mapping(target = "region", ignore = true)})
+    @Mappings({})
     
     public abstract WorkingArea fromDTOToBean(WorkingAreaDTO dto);
 
@@ -181,5 +184,59 @@ public abstract class ApiMapper {
  					+ ".map(reference -> addressRepository.findOneByReference(reference).orElse(null))"
  					+ ".filter(address -> address != null)" + ".collect(Collectors.toSet()))", target = "addresses") })
  	public abstract void updateBeanFromDto(CompanyDTO dto, @MappingTarget Company bean);
+
+ 	
+ // Prestataire
+
+ 	@Mappings({ @Mapping(target = "creationDate", ignore = true), @Mapping(target = "modificationDate", ignore = true),
+ 			@Mapping(expression = "java(dto.getPrestationReferences().stream()"
+ 					+ ".map(reference -> prestationRepository.findOneByReference(reference).orElse(null))"
+ 					+ ".filter(prestation -> prestation != null)"
+ 					+ ".collect(Collectors.toSet()))", target = "prestations"),
+ 			@Mapping(expression = "java(dto.getWorkingAreasReferences().stream()"
+ 					+ ".map(reference -> workingAreaRepository.findOneByReference(reference).orElse(null))"
+ 					+ ".filter(workingArea -> workingArea != null)"
+ 					+ ".collect(Collectors.toSet()))", target = "workingAreas"),
+ 			@Mapping(target = "address", expression = "java(addressRepository.findOneByReference(dto.getAddressReference()).orElse(null))") })
+ 	public abstract Prestataire fromDTOToBean(PrestataireDTO dto);
+
+ 	@Mappings({ @Mapping(source = "address.reference", target = "addressReference"),
+ 			@Mapping(expression = "java(bean.getPrestations().stream().map(prestation -> prestation.getReference()).collect(Collectors.toSet()))", target = "prestationReferences"),
+ 			@Mapping(expression = "java(bean.getWorkingAreas().stream().map(workingArea -> workingArea.getReference()).collect(Collectors.toSet()))", target = "workingAreasReferences") })
+ 	public abstract PrestataireDTO fromBeanToDTO(Prestataire bean);
+
+ 	@Mappings({ @Mapping(target = "reference", ignore = true), @Mapping(target = "creationDate", ignore = true),
+ 			@Mapping(target = "modificationDate", ignore = true),
+ 			@Mapping(expression = "java(dto.getPrestationReferences().stream()"
+ 					+ ".map(reference -> prestationRepository.findOneByReference(reference).orElse(null))"
+ 					+ ".filter(prestation -> prestation != null)"
+ 					+ ".collect(Collectors.toSet()))", target = "prestations"),
+ 			@Mapping(expression = "java(dto.getWorkingAreasReferences().stream()"
+ 					+ ".map(reference -> workingAreaRepository.findOneByReference(reference).orElse(null))"
+ 					+ ".filter(workingArea -> workingArea != null)"
+ 					+ ".collect(Collectors.toSet()))", target = "workingAreas"),
+ 			@Mapping(target = "address", expression = "java(addressRepository.findOneByReference(dto.getAddressReference()).orElse(null))") })
+ 	public abstract void updateBeanFromDto(PrestataireDTO dto, @MappingTarget Prestataire bean);
+
+ 	// Prestation
+
+ 	@Mappings({
+ 			@Mapping(expression = "java(dto.getCategoriesReferences().stream()"
+ 					+ ".map(reference -> categoryRepository.findOneByReference(reference).orElse(null))"
+ 					+ ".filter(category -> category != null)" + ".collect(Collectors.toSet()))", target = "categories"),
+ 			@Mapping(target = "parent", expression = "java(prestationRepository.findOneByReference(dto.getParentReference()).orElse(null))"), })
+ 	public abstract Prestation fromDTOToBean(PrestationDTO dto);
+
+ 	@Mappings({ @Mapping(source = "parent.reference", target = "parentReference"),
+ 			@Mapping(expression = "java(bean.getCategories().stream().map(caterory -> caterory.getReference()).collect(Collectors.toSet()))", target = "categoriesReferences"), })
+ 	public abstract PrestationDTO fromBeanToDTO(Prestation bean);
+
+ 	@Mappings({ @Mapping(target = "reference", ignore = true),
+ 			@Mapping(expression = "java(dto.getCategoriesReferences().stream()"
+ 					+ ".map(reference -> categoryRepository.findOneByReference(reference).orElse(null))"
+ 					+ ".filter(category -> category != null)" + ".collect(Collectors.toSet()))", target = "categories"),
+ 			@Mapping(target = "parent", expression = "java(prestationRepository.findOneByReference(dto.getParentReference()).orElse(null))"), })
+
+ 	public abstract void updateBeanFromDto(PrestationDTO dto, @MappingTarget Prestation bean);
 
 }

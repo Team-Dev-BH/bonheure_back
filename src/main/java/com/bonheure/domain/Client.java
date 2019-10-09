@@ -10,8 +10,6 @@ public class Client extends User {
 
     private String position;
 
-    private LocalDateTime birthDate;
-
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Company company;
 
@@ -37,13 +35,7 @@ public class Client extends User {
         this.position = position;
     }
 
-    public LocalDateTime getBirthDate() {
-        return birthDate;
-    }
 
-    public void setBirthDate(LocalDateTime birthDate) {
-        this.birthDate = birthDate;
-    }
 
     public Set<Group> getGroups() {
         return groups;

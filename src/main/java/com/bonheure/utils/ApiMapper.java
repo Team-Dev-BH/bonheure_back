@@ -1,10 +1,12 @@
 package com.bonheure.utils;
 
 
+import com.bonheure.controller.dto.AddressDTO;
 import com.bonheure.controller.dto.CategoryDTO;
 import com.bonheure.controller.dto.GroupDTO;
 import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.controller.dto.WorkingAreaDTO;
+import com.bonheure.domain.Address;
 import com.bonheure.domain.Category;
 import com.bonheure.domain.Group;
 import com.bonheure.domain.User;
@@ -116,5 +118,18 @@ public abstract class ApiMapper {
 
     @Mappings({})
        public abstract Category  fromDTOToBean(CategoryDTO dto);
+    
+    
+    //Adress
+    
+
+    @Mappings({@Mapping(target = "reference", ignore = true)})
+    public abstract void updateBeanFromDto(AddressDTO dto, @MappingTarget Address bean);
+
+    @Mappings({})
+    public abstract AddressDTO fromBeanToDTO(Address bean);
+
+    @Mappings({})
+       public abstract Address  fromDTOToBean(AddressDTO dto);
     
 }

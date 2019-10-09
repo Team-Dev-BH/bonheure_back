@@ -1,6 +1,8 @@
 package com.bonheure.controller;
 
 import com.bonheure.controller.dto.AddressDTO;
+import com.bonheure.controller.dto.CategoryDTO;
+import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,4 +32,20 @@ public class AddressController {
 
         return addressService.getAddressByReference(reference);
     }
+    
+    @DeleteMapping("/{reference}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAddress(@PathVariable(value = "reference") String reference) {
+    	addressService.deleteAddressByReference(reference);
+    }
+
+    @PutMapping("/{reference}")
+    @ResponseStatus(HttpStatus.OK)
+    public AddressDTO updateAddress(@PathVariable(value = "reference") String reference, @Valid @RequestBody AddressDTO adresse) {
+        return addressService.updateAddressByReference(reference, adresse);
+    }
+    
+    
+  
+    
 }

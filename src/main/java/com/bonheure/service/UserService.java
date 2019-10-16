@@ -3,9 +3,19 @@ package com.bonheure.service;
 
 import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.domain.User;
+import com.bonheure.execption.CustomException;
 import com.bonheure.repository.UserRepository;
+import com.bonheure.security.JwtTokenProvider;
 import com.bonheure.utils.ApiMapper;
+
+ 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -19,17 +29,53 @@ public class UserService {
 
     @Autowired
     private ApiMapper apiMapper;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-    public UserDTO saveUser(UserDTO userDTO) {
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    
+    public String signin(String email, String password) {
+        try {
+          authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+          return jwtTokenProvider.createToken(email,userRepository.findByEmail(email).getRole());
+        } catch (AuthenticationException e) {
+          throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+      }
+    
+    
+    
+    
+    
+    
+    
+    
+    //
+    
+  
+
+    public String saveUser(UserDTO userDTO) {
 
         userDTO.setReference(UUID.randomUUID().toString());
-        User user = apiMapper.fromDTOToBean(userDTO);
+        User user =new User();
+        if (!userRepository.existsByUsername(userDTO.getUsername())) {
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        
+        user = apiMapper.fromDTOToBean(userDTO);
         userRepository.save(user);
 
-        return userDTO;
+        return  jwtTokenProvider.createToken(user.getUsername(), user.getRole());
+        } else {
+            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+          }
 
     }
+    
 
     public UserDTO getUserByReference(String reference) {
         User user = userRepository.findOneByReference(reference).
@@ -41,6 +87,8 @@ public class UserService {
 
         return userDTO;
     }
+    
+    
 
 
     public void deleteUserByReference(String reference) {
@@ -64,6 +112,11 @@ public class UserService {
         }
         return userDTO;
     }
+    
+    
+    
+    
+    
 
 
 }

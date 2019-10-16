@@ -84,16 +84,17 @@ public abstract class ApiMapper {
 
 
     //user
+   
 
     @Mappings({@Mapping(target = "reference", ignore = true),
             @Mapping(target = "creationDate", ignore = true),
             @Mapping(target = "modificationDate", ignore = true),})
     public abstract void updateBeanFromDto(UserDTO dto, @MappingTarget User bean);
 
-    @Mappings({})
+    @Mappings({@Mapping(target = "password", ignore = true)})
     public abstract UserDTO fromBeanToDTO(User bean);
 
-    @Mappings({
+    @Mappings({ 
             @Mapping(target = "creationDate", ignore = true),
             @Mapping(target = "modificationDate", ignore = true)})
     public abstract User fromDTOToBean(UserDTO dto);

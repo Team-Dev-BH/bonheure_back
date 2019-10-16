@@ -4,6 +4,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -20,8 +22,18 @@ public class User {
 
     @Column(unique = true)
     private String reference;
+    
+    private String username;
 
-    private String firstName;
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	private String firstName;
 
     private String lastName;
 
@@ -33,8 +45,10 @@ public class User {
     private String password;
 
     private LocalDateTime birthDate;
-
+    
+    
     @CreatedDate
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime creationDate;
 
     @LastModifiedDate

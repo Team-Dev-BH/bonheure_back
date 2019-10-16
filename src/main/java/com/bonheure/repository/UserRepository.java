@@ -11,8 +11,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneByReference(String reference);
 
     long deleteByReference(String reference);
+    
+    boolean existsByUsername(String username);
+
+    User findByUsername(String username);
+      
+    User findByEmail(String email);
+
 
 
     List<User> findByFirstName(String firstName);
+    
 
 }

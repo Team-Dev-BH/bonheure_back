@@ -47,31 +47,20 @@ public class UserService {
           throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
         }
       }
-    
-    
-    
-    
-    
-    
-    
-    
-    //
-    
-  
-
+ 
     public String saveUser(UserDTO userDTO) {
 
         userDTO.setReference(UUID.randomUUID().toString());
         User user =new User();
-        if (!userRepository.existsByUsername(userDTO.getUsername())) {
+        if (!userRepository.existsByEmail(userDTO.getEmail())) {
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         
         user = apiMapper.fromDTOToBean(userDTO);
         userRepository.save(user);
 
-        return  jwtTokenProvider.createToken(user.getUsername(), user.getRole());
+        return  jwtTokenProvider.createToken(user.getEmail(), user.getRole());
         } else {
-            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new CustomException("Email is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
           }
 
     }

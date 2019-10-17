@@ -2,7 +2,7 @@ package com.bonheure.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+ 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,24 +39,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Entry points
     http.authorizeRequests()//
-        .antMatchers("/users/signin").permitAll()//
-        .antMatchers("/users/signup").permitAll()//
-      
-        .antMatchers("/testbd?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC").permitAll()
-        // Disallow everything else..
+        .antMatchers("/**/signin").permitAll()//
+        .antMatchers("/**/signup").permitAll()//
+        .antMatchers("/users/**").hasAuthority("SUPERADMIN")//
+        .antMatchers("/clients/**").hasAnyAuthority("CLIENT","SUPERADMIN")//
+        //.antMatchers("/users/deleteUserByReference").hasAuthority("SUPERADMIN")//
+         // Disallow everything else..
         .anyRequest().authenticated();
 
     // If a user try to access a resource without having enough permissions
     http.exceptionHandling().accessDeniedPage("/login");
 
     // Apply JWT
-    http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+   http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 
     // Optional, if you want to test the API from a browser
-    // http.httpBasic();
+   //http.httpBasic();
   }
 
-  @Override
+   @Override
   public void configure(WebSecurity web) throws Exception {
     // Allow swagger to be accessed without authentication
     web.ignoring().antMatchers("/v2/api-docs")//
@@ -67,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/public");
         
      
-  }
+  } 
 
   @Bean
   public PasswordEncoder passwordEncoder() {

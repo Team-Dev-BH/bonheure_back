@@ -66,17 +66,14 @@ public class JwtTokenProvider {
   
   
   public Authentication getAuthentication(String token) {
-   UserDetails userDetails = myUserDetails.loadUserByUsername(getUsername(token));
+   UserDetails userDetails = myUserDetails.loadUserByUsername(getEmail(token));
     return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
  }
   
 
-//  public Authentication getAuthentication(String token) {
-//    UserDetails userDetails = myUserDetails.loadUserByUsername(getUsername(token));
-//    return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-//  }
+ 
 
-  public String getUsername(String token) {
+  public String getEmail(String token) {
     return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
   }
 

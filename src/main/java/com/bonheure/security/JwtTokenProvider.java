@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
  
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Component;
 
 import com.bonheure.domain.Role;
@@ -50,6 +51,7 @@ public class JwtTokenProvider {
   public String createToken(String email, Role role) {
 
     Claims claims = Jwts.claims().setSubject(email);
+    Jwts.jwsHeader();
   //  claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
     claims.put("auth", role);
 

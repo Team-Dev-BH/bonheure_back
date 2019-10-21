@@ -28,7 +28,7 @@ public class UserDTO {
 
     private LocalDateTime modificationDate;
 
-    private String activationDate;
+    private LocalDateTime activationDate;
 
     private Boolean activated;
 
@@ -100,11 +100,13 @@ public class UserDTO {
     }
 
 
-    public String getActivationDate() {
+   
+
+	public LocalDateTime getActivationDate() {
 		return activationDate;
 	}
 
-	public void setActivationDate(String activationDate) {
+	public void setActivationDate(LocalDateTime activationDate) {
 		this.activationDate = activationDate;
 	}
 

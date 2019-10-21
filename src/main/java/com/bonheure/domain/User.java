@@ -49,7 +49,8 @@ public class User {
 
     private LocalDateTime activationDate;
 
-    private Boolean activated;
+    @Column(name = "activated", nullable = false)
+    private boolean activated=false ;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -135,15 +136,17 @@ public class User {
         this.activationDate = activationDate;
     }
 
-    public Boolean getActivated() {
-        return activated;
-    }
+ 
 
-    public void setActivated(Boolean activated) {
-        this.activated = activated;
-    }
+    public boolean isActivated() {
+		return activated;
+	}
 
-    public LocalDateTime getBirthDate() {
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
+	public LocalDateTime getBirthDate() {
         return birthDate;
     }
 

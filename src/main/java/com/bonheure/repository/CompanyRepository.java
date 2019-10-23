@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     Optional<Company> findOneByReference(String reference);
+    
     long deleteByReference(String reference);
+    
 
 }

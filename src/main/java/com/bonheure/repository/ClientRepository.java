@@ -13,6 +13,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 	long deleteByReference(String reference);
 
 	boolean existsByEmail(String email);
-
+	boolean existsByCompany( String reference);
+	
 	Client findByEmail(String email);
 }

@@ -3,10 +3,14 @@ package com.bonheure.service;
 import com.bonheure.controller.dto.ClientDTO;
 
 import com.bonheure.domain.Client;
+import com.bonheure.domain.Company;
+import com.bonheure.domain.Role;
 import com.bonheure.domain.User;
 import com.bonheure.execption.CustomException;
 import com.bonheure.repository.ClientRepository;
+import com.bonheure.repository.CompanyRepository;
 import com.bonheure.repository.UserRepository;
+import com.bonheure.security.JwtResponse;
 import com.bonheure.security.JwtTokenProvider;
 import com.bonheure.utils.ApiMapper;
 
@@ -39,38 +43,82 @@ public class ClientService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	public String signin(String email, String password) {
+	@Autowired
+	private CompanyRepository companyRepository;
+
+	// signin
+	public JwtResponse signin(String email, String password) {
+
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-			return jwtTokenProvider.createToken(email, clientRepository.findByEmail(email).getRole());
+
+			if (clientRepository.findByEmail(email).isActivated() == false) {
+				throw new CustomException("Account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+
+			Role authority = clientRepository.findByEmail(email).getRole();
+
+			String jwt = jwtTokenProvider.createToken(email, authority);
+
+			return new JwtResponse(jwt, email, clientRepository.findByEmail(email).getRole().toString());
+
 		} catch (AuthenticationException e) {
 			throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
 
-	public String saveClient(ClientDTO clientDTO) {
+	// company exists by domain
+	public Company verifyCompany(ClientDTO client) {
+
+		String domain = client.getEmail().substring(client.getEmail().indexOf("@") + 1);
+
+		Company company = companyRepository.findOneByDomainName(domain).orElse(null);
+
+		if (company == null)
+			return null;
+
+		return company;
+
+	}
+
+	// signup
+	public String signUpClient(ClientDTO clientDTO) {
 
 		clientDTO.setReference(UUID.randomUUID().toString());
 		Client client = new Client();
 
 		if (!clientRepository.existsByEmail(clientDTO.getEmail())) {
+
+			if (verifyCompany(clientDTO) == null) {
+				throw new CustomException("No company for this client is found ", HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+
+			if (!verifyCompany(clientDTO).getCode().equals(clientDTO.getCompanyCode())) {
+				throw new CustomException("your code is wrong ", HttpStatus.UNPROCESSABLE_ENTITY);
+			}
+
+			clientDTO.setCompanyReference(verifyCompany(clientDTO).getReference());
+
 			clientDTO.setPassword(passwordEncoder.encode(clientDTO.getPassword()));
 
 			client = apiMapper.fromDTOToBean(clientDTO);
+
 			clientRepository.save(client);
 
 			return jwtTokenProvider.createToken(client.getEmail(), client.getRole());
 		} else {
-			throw new CustomException("Email is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+			throw new CustomException("you are already registered", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 
 	}
+
+	// getByReference
 
 	public ClientDTO getClientByReference(String reference) {
 
 		Client client = clientRepository.findOneByReference(reference).orElse(null);
 
-		if (client != null) {
+		if ((client != null)) {
 
 			ClientDTO clientDTO = apiMapper.fromBeanToDTO(client);
 
@@ -81,22 +129,29 @@ public class ClientService {
 
 	}
 
-	public void deleteClientByReference(String reference) {
-		Client client = clientRepository.findOneByReference(reference).orElse(null);
 
-		clientRepository.delete(client);
 
-	}
-
+//update
 	public ClientDTO updateClientByReference(String reference, ClientDTO clientDTO) {
+
 		Client oldClient = clientRepository.findOneByReference(reference).orElse(null);
 
 		if (oldClient != null) {
-			apiMapper.updateBeanFromDto(clientDTO, oldClient);
-			clientRepository.save(oldClient);
 
+			clientDTO.setPassword(passwordEncoder.encode(clientDTO.getPassword()));
+
+			apiMapper.updateBeanFromDto(clientDTO, oldClient);
+
+			clientRepository.save(oldClient);
 		}
 		return clientDTO;
 	}
 
+	
+	
+	
+	
+	
+	
+	
 }

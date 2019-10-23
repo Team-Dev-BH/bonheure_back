@@ -19,44 +19,41 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bonheure.controller.dto.WorkingAreaDTO;
 import com.bonheure.service.WorkingAreaService;
 
+import io.swagger.annotations.Api;
+
 @RestController
-@RequestMapping(value="working areas")
-
-
+@RequestMapping(value = "working areas")
+@Api(tags = "working areas")
 public class WorkingAreaController {
-	
-	
+
 	@Autowired
 	WorkingAreaService workingAreaService;
-	
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public WorkingAreaDTO saveWorkingArea(@RequestBody @Valid WorkingAreaDTO workingarea) {
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public WorkingAreaDTO saveWorkingArea(@RequestBody @Valid WorkingAreaDTO workingarea) {
 
-        return workingAreaService.saveWorkingArea(workingarea);
-    }
+		return workingAreaService.saveWorkingArea(workingarea);
+	}
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public WorkingAreaDTO getWorkingArea(@RequestParam(required = false) String reference) {
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public WorkingAreaDTO getWorkingArea(@RequestParam(required = false) String reference) {
 
-        return workingAreaService.getWorkingAreaByReference(reference);
-    }
+		return workingAreaService.getWorkingAreaByReference(reference);
+	}
 
+	@DeleteMapping("/{reference}")
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteWorkingArea(@PathVariable(value = "reference") String reference) {
+		workingAreaService.deleteWorkingArearByReference(reference);
+	}
 
-    @DeleteMapping("/{reference}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteWorkingArea(@PathVariable(value = "reference") String reference) {
-    	workingAreaService.deleteWorkingArearByReference(reference);
-    }
-
-    @PutMapping("/{reference}")
-    @ResponseStatus(HttpStatus.OK)
-    public WorkingAreaDTO updateWorkingarea(@PathVariable(value = "reference") String reference, @Valid @RequestBody WorkingAreaDTO workingarea) {
-        return workingAreaService.updateWorkingAreaByReference(reference, workingarea);
-    }
-	
-	
+	@PutMapping("/{reference}")
+	@ResponseStatus(HttpStatus.OK)
+	public WorkingAreaDTO updateWorkingarea(@PathVariable(value = "reference") String reference,
+			@Valid @RequestBody WorkingAreaDTO workingarea) {
+		return workingAreaService.updateWorkingAreaByReference(reference, workingarea);
+	}
 
 }

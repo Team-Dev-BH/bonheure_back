@@ -18,6 +18,16 @@ public class CompanyDTO {
 
 	private Set<String> addressesReferences;
 
+	private String domainName ; 
+	
+	public String getDomainName() {
+		return domainName;
+	}
+
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
+	}
+
 	public Set<String> getAddressesReferences() {
 		return addressesReferences;
 	}

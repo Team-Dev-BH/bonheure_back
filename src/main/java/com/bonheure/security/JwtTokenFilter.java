@@ -33,6 +33,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
       if (token != null && jwtTokenProvider.ValidateToken(token)) {
         Authentication auth = jwtTokenProvider.getAuthentication(token);
         SecurityContextHolder.getContext().setAuthentication(auth);
+        System.out.println("this is for verification");
       }
     } catch (CustomException ex) {
       //this is very important, since it guarantees the user is not authenticated at all

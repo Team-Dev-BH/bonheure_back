@@ -23,9 +23,6 @@ public class User {
     @Column(unique = true)
     private String reference;
     
-
-    
-
 	private String firstName;
 
     private String lastName;

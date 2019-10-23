@@ -9,9 +9,18 @@ import java.util.Set;
 public class Client extends User {
 	
 	private String position;
+     
+	private String companycode;
 
+  public String getCompanycode() {
+		return companycode;
+	}
 
-  @ManyToOne(cascade = CascadeType.REMOVE)
+	public void setCompanycode(String companycode) {
+		this.companycode = companycode;
+	}
+
+@ManyToOne(cascade = CascadeType.REMOVE)
   private Company company; 
     
 	@ManyToMany(fetch = FetchType.LAZY)

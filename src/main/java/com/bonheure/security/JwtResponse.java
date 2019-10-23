@@ -4,14 +4,23 @@ public class JwtResponse {
 	private String email;
 	private String role;
 	private String token;
+	 
+	 
 
-	public JwtResponse(String token, String email, String authoritiy) {
+	public JwtResponse(String token, String email, String authoritiy  ) {
 
 		this.email = email;
 		this.role = authoritiy;
 		this.token = token;
-
+		 
+ 
 	}
+
+ 
+
+	 
+
+
 
 	public String getToken() {
 		return token;

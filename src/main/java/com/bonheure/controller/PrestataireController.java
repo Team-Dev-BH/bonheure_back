@@ -17,22 +17,60 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bonheure.controller.dto.PrestataireDTO;
-import com.bonheure.controller.dto.UserDTO;
+ 
+import com.bonheure.security.JwtResponse;
 import com.bonheure.service.PrestataireService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value = "prestataires")
+@Api(tags = "prestataires")
 public class PrestataireController {
 
 	@Autowired
 	private PrestataireService prestataireService;
 	
-	  @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	
+//signup Prestataire
+    
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/signup")
+    @ApiOperation(value = "${PrestataireController.signup}")
+    @ApiResponses(value = {//
+        @ApiResponse(code = 400, message = "Something went wrong"), //
+        @ApiResponse(code = 403, message = "Access denied"), //
+        @ApiResponse(code = 422, message = "mobileNumber is already in use"), //
+        @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public String savePrestataire(@ApiParam("Signup Prestataire") @RequestBody @Valid PrestataireDTO prestataire) {
+        return prestataireService.savePrestataire(prestataire);
+    }
+	
+  //signin
+    @PostMapping("/signin")
+    @ApiOperation(value = "${PrestataireController.signin}")
+    @ApiResponses(value = {//
+    @ApiResponse(code = 400, message = "Something went wrong"), //
+    @ApiResponse(code = 422, message = "Invalid mobileNumber/password supplied")})
+    public JwtResponse login(//
+        @ApiParam("mobileNumber") @RequestParam String mobileNumber, //
+        @ApiParam("Password") @RequestParam String password) {
+      return prestataireService.signin(mobileNumber, password);
+    }
+    
+	
+	
+	
+	 /* @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	    @ResponseStatus(HttpStatus.OK) 
 	  public PrestataireDTO savePrestataire(@RequestBody @Valid PrestataireDTO prestataire) {
 
 	        return prestataireService.savePrestataire(prestataire);
-	    }
+	    }*/
 	  
 	  
 	  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

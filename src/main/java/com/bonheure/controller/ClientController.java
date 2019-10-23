@@ -4,6 +4,7 @@ import com.bonheure.controller.dto.ClientDTO;
 import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.service.ClientService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "clients")
+@Api(tags = "clients")
 public class ClientController {
 
     @Autowired
@@ -31,7 +33,7 @@ public class ClientController {
     @ApiResponses(value = {//
         @ApiResponse(code = 400, message = "Something went wrong"), //
         @ApiResponse(code = 403, message = "Access denied"), //
-        @ApiResponse(code = 422, message = "Username is already in use"), //
+        @ApiResponse(code = 422, message = "email is already in use"), //
         @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public String saveClient(@RequestBody @Valid ClientDTO client) {
 
@@ -43,7 +45,7 @@ public class ClientController {
     @ApiOperation(value = "${ClientController.signin}")
     @ApiResponses(value = {//
   @ApiResponse(code = 400, message = "Something went wrong"), //
-  @ApiResponse(code = 422, message = "Invalid username/password supplied")})
+  @ApiResponse(code = 422, message = "Invalid email/password supplied")})
     
     
     public String login(//
@@ -72,7 +74,7 @@ public class ClientController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteClient(@PathVariable(value = "reference") String reference) {
         clientService.deleteClientByReference(reference);
-    }
+    }   
 
 
      @PutMapping("/{reference}")

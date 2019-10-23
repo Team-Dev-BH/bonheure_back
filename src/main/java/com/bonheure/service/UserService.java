@@ -39,6 +39,26 @@ public class UserService {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	
+	// signup
+	public String saveUser(UserDTO userDTO) {
+
+		userDTO.setReference(UUID.randomUUID().toString());
+		User user = new User();
+		if (userRepository.existsByEmail(userDTO.getEmail()) == false) {
+			userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+			user = apiMapper.fromDTOToBean(userDTO);
+			userRepository.save(user);
+
+			return jwtTokenProvider.createToken(user.getEmail(), user.getRole());
+		} else {
+			throw new CustomException("Email is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
+	}
+
 
 	// signin
 	public JwtResponse signin(String email, String password) {
@@ -61,23 +81,6 @@ public class UserService {
 		}
 	}
 
-	// signup
-	public String saveUser(UserDTO userDTO) {
-
-		userDTO.setReference(UUID.randomUUID().toString());
-		User user = new User();
-		if (userRepository.existsByEmail(userDTO.getEmail()) == false) {
-			userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-
-			user = apiMapper.fromDTOToBean(userDTO);
-			userRepository.save(user);
-
-			return jwtTokenProvider.createToken(user.getEmail(), user.getRole());
-		} else {
-			throw new CustomException("Email is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
-		}
-
-	}
 
 	// methodeActivate-Desactivate user
 

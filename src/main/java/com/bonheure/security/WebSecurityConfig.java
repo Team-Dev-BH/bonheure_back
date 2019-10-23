@@ -41,9 +41,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()//
         .antMatchers("/**/signin").permitAll()//
         .antMatchers("/**/signup").permitAll()//
-        .antMatchers("/users/**").hasAuthority("SUPERADMIN")//
+         .antMatchers("/users/**").hasRole("SUPERADMIN")//
         .antMatchers("/clients/**").hasAnyAuthority("CLIENT","SUPERADMIN")//
-        //.antMatchers("/users/deleteUserByReference").hasAuthority("SUPERADMIN")//
+        .antMatchers("/prestataires/**").hasAnyAuthority("PRESTATAIRE","SUPERADMIN")//
+        .antMatchers("/groups/**").hasAuthority("SUPERADMIN")//
+        .antMatchers("/categories/**").hasAuthority("SUPERADMIN")//
+        .antMatchers("/prestations/**").hasAnyAuthority("PRESTATAIRE","SUPERADMIN")//
+        .antMatchers("/companies/**").hasAuthority("SUPERADMIN")//
+        .antMatchers("/working areas/**").hasAnyAuthority("PRESTATAIRE","SUPERADMIN")//
+        .antMatchers("/address/**").hasAnyAuthority("PRESTATAIRE","SUPERADMIN","CLIENT")//
+
+         
          // Disallow everything else..
         .anyRequest().authenticated();
 

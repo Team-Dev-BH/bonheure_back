@@ -40,10 +40,19 @@ public class Company {
     private String name;
 
     private String activityField;
+	private String domainName ; 
 
     private String description;
 
-    public Long getId() {
+    public String getDomainName() {
+		return domainName;
+	}
+
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
+	}
+
+	public Long getId() {
         return id;
     }
 

@@ -65,6 +65,24 @@ public class JwtTokenProvider {
         .signWith(SignatureAlgorithm.HS256, secretKey)//
         .compact();
   }
+  //token prestataire
+  public String createTokenForPrestataire(String mobileNumber, Role role) {
+
+	    Claims claims = Jwts.claims().setSubject(mobileNumber);
+	    Jwts.jwsHeader();
+	  //  claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
+	    claims.put("auth", role);
+
+	    Date now = new Date();
+	    Date validity = new Date(now.getTime() + validityInMilliseconds);
+
+	    return Jwts.builder()//
+	        .setClaims(claims)//
+	        .setIssuedAt(now)//
+	        .setExpiration(validity)//
+	        .signWith(SignatureAlgorithm.HS256, secretKey)//
+	        .compact();
+	  }
   
   
   public Authentication getAuthentication(String token) {

@@ -46,10 +46,9 @@ public class UserService {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-			if (userRepository.findByEmail(email).isActivated() == false) {
-				throw new CustomException("Account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY);
-			}
-
+// for superadmin 
+			userRepository.findByEmail(email).setActivated(true);
+			
 			Role authority = userRepository.findByEmail(email).getRole();
 
 			String jwt = jwtTokenProvider.createToken(email, authority);
@@ -62,17 +61,19 @@ public class UserService {
 	}
 
 	// signup
-	public String saveUser(UserDTO userDTO) {
+	
+	public UserDTO signUpUser(UserDTO userDTO) {
 
 		userDTO.setReference(UUID.randomUUID().toString());
 		User user = new User();
+
 		if (userRepository.existsByEmail(userDTO.getEmail()) == false) {
 			userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
 			user = apiMapper.fromDTOToBean(userDTO);
 			userRepository.save(user);
 
-			return jwtTokenProvider.createToken(user.getEmail(), user.getRole());
+			return userDTO;
 		} else {
 			throw new CustomException("Email is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
 		}
@@ -96,7 +97,8 @@ public class UserService {
 
 	}
 
-//getUserByReference
+	// getUserByReference
+
 	public UserDTO getUserByReference(String reference) {
 		User user = userRepository.findOneByReference(reference).orElse(null);
 
@@ -107,20 +109,24 @@ public class UserService {
 		return userDTO;
 	}
 
-//deleteUserByreference
-	public void deleteUserByReference(String reference) {
-		User user = userRepository.findOneByReference(reference).orElse(null);
+	// deleteUserByreference
 
+	public void deleteUserByReference(String reference) {
+		
+		User user = userRepository.findOneByReference(reference).orElse(null);
+		
+		
 		userRepository.delete(user);
 
 	}
+
 	// updateUserByreference
 
 	public UserDTO updateUserByReference(String reference, UserDTO userDTO) {
 
 		User oldUser = userRepository.findOneByReference(reference).orElse(null);
 
-		if (oldUser != null)  {
+		if (oldUser != null) {
 			userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 			apiMapper.updateBeanFromDto(userDTO, oldUser);
 			userRepository.save(oldUser);

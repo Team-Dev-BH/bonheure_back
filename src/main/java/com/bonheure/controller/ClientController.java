@@ -3,23 +3,21 @@ package com.bonheure.controller;
 import com.bonheure.controller.dto.ClientDTO;
 import com.bonheure.security.JwtResponse;
 import com.bonheure.service.ClientService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
 @RestController
 @RequestMapping(value = "clients")
 @Api(tags = "clients")
+
 
 public class ClientController {
 
@@ -36,7 +34,7 @@ public class ClientController {
         @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public String saveClient(@RequestBody @Valid ClientDTO client) {
 
-        return clientService.saveClient(client);
+        return clientService.signUpClient(client);
     }
     
     
@@ -66,17 +64,6 @@ public class ClientController {
         return clientService.getClientByReference(reference);
     }
 
-   //deleteClientByReference
-     @DeleteMapping("/deleteClientByReference")
-     @ApiOperation(value = "${ClientController.deleteClientByReference}")
-     @ApiResponses(value = {//
-     @ApiResponse(code = 400, message = "Something went wrong"), //
-     @ApiResponse(code = 403, message = "Access denied"), //
-     @ApiResponse(code = 404, message = "The user doesn't exist"), //
-     @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-     public void deleteClientByReference(@RequestParam(required = false) String reference) {
-    	 clientService.deleteClientByReference(reference);
-     }
      
    //updateClientByreference
      @PutMapping("/updateClient")
@@ -84,5 +71,6 @@ public class ClientController {
      public ClientDTO updateUser(@RequestParam(required = false) String reference, @Valid @RequestBody ClientDTO client) {
          return clientService.updateClientByReference(reference, client);
      }
+
 
 }

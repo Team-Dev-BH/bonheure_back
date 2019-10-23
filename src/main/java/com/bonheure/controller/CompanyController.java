@@ -2,6 +2,9 @@ package com.bonheure.controller;
 
 import com.bonheure.controller.dto.CompanyDTO;
 import com.bonheure.service.CompanyService;
+
+import io.swagger.annotations.Api;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,6 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "companies")
+@Api(tags = "companies")
 public class CompanyController {
 
     @Autowired

@@ -74,18 +74,15 @@ public abstract class ApiMapper {
 
 	// user
 
-	@Mappings({ @Mapping(target = "reference", ignore = true), 
-			@Mapping(target = "creationDate", ignore = true),
-			@Mapping(target = "modificationDate", ignore = true),
-			@Mapping(target = "activated", ignore = true) })
+	@Mappings({ @Mapping(target = "reference", ignore = true), @Mapping(target = "creationDate", ignore = true),
+			@Mapping(target = "modificationDate", ignore = true), @Mapping(target = "activated", ignore = true) })
 	public abstract void updateBeanFromDto(UserDTO dto, @MappingTarget User bean);
 
 	@Mappings({ @Mapping(target = "password", ignore = true) })
 	public abstract UserDTO fromBeanToDTO(User bean);
 
-	@Mappings({ @Mapping(target = "creationDate", ignore = true),
-			@Mapping(target = "modificationDate", ignore = true),
-			@Mapping(target = "activated", ignore = true)})
+	@Mappings({ @Mapping(target = "creationDate", ignore = true), @Mapping(target = "modificationDate", ignore = true),
+			@Mapping(target = "activated", ignore = true) })
 	public abstract User fromDTOToBean(UserDTO dto);
 
 	// Working Area
@@ -125,6 +122,7 @@ public abstract class ApiMapper {
 	// client
 	@Mappings({ @Mapping(source = "address.reference", target = "adressReference"),
 			@Mapping(source = "company.reference", target = "companyReference"),
+			@Mapping(target = "password", ignore = true),
 			@Mapping(expression = "java(bean.getGroups().stream().map(group -> group.getReference()).collect(Collectors.toSet()))", target = "groupReferences"), })
 	public abstract ClientDTO fromBeanToDTO(Client bean);
 

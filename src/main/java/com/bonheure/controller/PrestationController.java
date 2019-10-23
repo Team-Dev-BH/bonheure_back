@@ -20,10 +20,14 @@ import com.bonheure.controller.dto.PrestationDTO;
 import com.bonheure.controller.dto.PrestationDTO;
 import com.bonheure.controller.dto.PrestationDTO;
 import com.bonheure.service.PrestationService;
+
+import io.swagger.annotations.Api;
+
 import com.bonheure.service.PrestationService;
 
 @RestController
 @RequestMapping(value = "prestations")
+@Api(tags = "prestations")
 public class PrestationController {
 
 	@Autowired

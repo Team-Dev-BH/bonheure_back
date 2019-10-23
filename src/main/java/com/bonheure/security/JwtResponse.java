@@ -1,13 +1,13 @@
 package com.bonheure.security;
 
 public class JwtResponse {
-	private String email;
+	private String username;
 	private String role;
 	private String token;
 
-	public JwtResponse(String token, String email, String authoritiy) {
+	public JwtResponse(String token, String username, String authoritiy) {
 
-		this.email = email;
+		this.username = username;
 		this.role = authoritiy;
 		this.token = token;
 
@@ -21,12 +21,12 @@ public class JwtResponse {
 		this.token = token;
 	}
 
-	public String getemail() {
-		return email;
+	public String getusername() {
+		return username;
 	}
 
-	public void setemail(String email) {
-		this.email = email;
+	public void setusername(String username) {
+		this.username = username;
 	}
 
 	public String getrole() {

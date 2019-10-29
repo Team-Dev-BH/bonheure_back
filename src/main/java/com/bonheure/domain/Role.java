@@ -1,60 +1,25 @@
 package com.bonheure.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+ 
 
-@Entity
-public class Role {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String reference;
+import org.springframework.security.core.GrantedAuthority;
 
-	private String name;
+ 
 
-	public Long getId() {
-		return id;
-	}
+ 
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+public enum Role implements GrantedAuthority {
+//		implements GrantedAuthority {
 
-	public String getReference() {
-		return reference;
-	}
+    SUPERADMIN, CLIENT, PRESTATAIRE;
 
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+    
+	  
+ 
 	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+	public String getAuthority() {
+		 
+		return name();
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-
-		if(!(obj instanceof Role))
-			return false;
-		
-		return this.reference.equalsIgnoreCase(((Role)obj).getReference());
-	}	
-	
-	
-	
 }

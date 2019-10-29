@@ -1,28 +1,29 @@
 package com.bonheure.controller.dto;
 
+import com.bonheure.domain.Role;
+
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class UserDTO {
 
-
     private String reference;
 
-    @NotNull
-    @Size(max = 20)
     private String firstName;
 
     private String lastName;
-
-    @Email
+    
+     
+ 
+	@Email
     private String email;
 
     private String mobileNumber;
 
     private String password;
-
+    
+    private LocalDateTime birthDate;
+    
     private LocalDateTime creationDate;
 
     private LocalDateTime modificationDate;
@@ -31,7 +32,8 @@ public class UserDTO {
 
     private Boolean activated;
 
-    private String role;
+    private Role role;
+
 
     public String getReference() {
         return reference;
@@ -97,15 +99,18 @@ public class UserDTO {
         this.modificationDate = modificationDate;
     }
 
-    public LocalDateTime getActivationDate() {
-        return activationDate;
-    }
 
-    public void setActivationDate(LocalDateTime activationDate) {
-        this.activationDate = activationDate;
-    }
+   
 
-    public Boolean getActivated() {
+	public LocalDateTime getActivationDate() {
+		return activationDate;
+	}
+
+	public void setActivationDate(LocalDateTime activationDate) {
+		this.activationDate = activationDate;
+	}
+
+	public Boolean getActivated() {
         return activated;
     }
 
@@ -113,11 +118,21 @@ public class UserDTO {
         this.activated = activated;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
+
+	public LocalDateTime getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(LocalDateTime birthDate) {
+		this.birthDate = birthDate;
+	}
+    
+    
 }

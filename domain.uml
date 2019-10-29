@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.bonheure.domain</OriginalElement>
+  <nodes>
+    <node x="0.0" y="456.0">com.bonheure.domain.WorkingArea</node>
+    <node x="120.50446428571428" y="146.0">com.bonheure.domain.Prestation</node>
+    <node x="486.7767857142857" y="212.0">com.bonheure.domain.Role</node>
+    <node x="395.5178571428571" y="368.0">com.bonheure.domain.User</node>
+    <node x="651.5178571428571" y="423.0">com.bonheure.domain.Company</node>
+    <node x="607.0178571428571" y="807.0">com.bonheure.domain.Client</node>
+    <node x="178.5178571428571" y="467.0">com.bonheure.domain.Group</node>
+    <node x="686.71875" y="146.0">com.bonheure.domain.Address</node>
+    <node x="54.51785714285711" y="774.0">com.bonheure.domain.Prestataire</node>
+    <node x="139.5625" y="0.0">com.bonheure.domain.Category</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.bonheure.domain.Client" target="com.bonheure.domain.Company">
+      <point x="2.8421709430404007E-14" y="-70.0" />
+      <point x="-46.0" y="103.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Group" target="com.bonheure.domain.Prestation">
+      <point x="49.25" y="-59.0" />
+      <point x="326.2678571428571" y="348.0" />
+      <point x="285.0044642857143" y="348.0" />
+      <point x="70.5" y="81.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Prestataire" target="com.bonheure.domain.Address">
+      <point x="64.85714285714289" y="-103.0" />
+      <point x="232.875" y="744.0" />
+      <point x="630.0178571428571" y="744.0" />
+      <point x="630.0178571428571" y="328.0" />
+      <point x="696.2901785714286" y="328.0" />
+      <point x="-57.428571428571445" y="81.0" />
+    </edge>
+    <edge source="com.bonheure.domain.User" target="com.bonheure.domain.Role">
+      <point x="56.0" y="-158.0" />
+      <point x="563.5178571428571" y="348.0" />
+      <point x="540.0267857142858" y="348.0" />
+      <point x="17.75" y="15.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Client" target="com.bonheure.domain.Group">
+      <point x="-51.714285714285666" y="-70.0" />
+      <point x="645.8035714285713" y="714.0" />
+      <point x="326.2678571428571" y="714.0" />
+      <point x="49.25" y="59.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Prestataire" target="com.bonheure.domain.Prestation">
+      <point x="0.0" y="-103.0" />
+      <point x="168.0178571428571" y="754.0" />
+      <point x="164.5" y="754.0" />
+      <point x="164.5" y="348.0" />
+      <point x="191.00446428571428" y="348.0" />
+      <point x="-23.5" y="81.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Client" target="com.bonheure.domain.User">
+      <point x="-25.857142857142833" y="-70.0" />
+      <point x="671.6607142857142" y="704.0" />
+      <point x="563.5178571428571" y="704.0" />
+      <point x="56.0" y="158.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Prestataire" target="com.bonheure.domain.WorkingArea">
+      <point x="-97.28571428571422" y="-103.0" />
+      <point x="70.73214285714289" y="754.0" />
+      <point x="35.75" y="754.0" />
+      <point x="-35.75" y="70.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Client" target="com.bonheure.domain.Address">
+      <point x="77.57142857142856" y="-70.0" />
+      <point x="775.0892857142856" y="754.0" />
+      <point x="857.0178571428571" y="754.0" />
+      <point x="857.0178571428571" y="328.0" />
+      <point x="811.1473214285714" y="328.0" />
+      <point x="57.428571428571445" y="81.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Prestation" target="com.bonheure.domain.Category">
+      <point x="-47.0" y="-81.0" />
+      <point x="167.50446428571428" y="121.0" />
+      <point x="173.0625" y="121.0" />
+      <point x="-33.5" y="48.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Prestataire" target="com.bonheure.domain.User">
+      <point x="32.428571428571445" y="-103.0" />
+      <point x="200.44642857142856" y="734.0" />
+      <point x="451.5178571428571" y="734.0" />
+      <point x="-56.0" y="158.0" />
+    </edge>
+    <edge source="com.bonheure.domain.Company" target="com.bonheure.domain.Address">
+      <point x="0.0" y="-103.0" />
+      <point x="743.5178571428571" y="348.0" />
+      <point x="753.71875" y="348.0" />
+      <point x="0.0" y="81.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6000000000000001" x="445.9999999999999" y="446.16666666666663" />
+  <SelectedNodes>
+    <node>com.bonheure.domain.WorkingArea</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

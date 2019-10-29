@@ -4,6 +4,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -20,21 +22,24 @@ public class User {
 
     @Column(unique = true)
     private String reference;
-
-    private String firstName;
+    
+	private String firstName;
 
     private String lastName;
 
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String mobileNumber;
 
     private String password;
 
     private LocalDateTime birthDate;
-
+    
+    
     @CreatedDate
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime creationDate;
 
     @LastModifiedDate
@@ -42,7 +47,8 @@ public class User {
 
     private LocalDateTime activationDate;
 
-    private Boolean activated;
+    
+    private boolean activated ;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -128,15 +134,17 @@ public class User {
         this.activationDate = activationDate;
     }
 
-    public Boolean getActivated() {
-        return activated;
-    }
+ 
 
-    public void setActivated(Boolean activated) {
-        this.activated = activated;
-    }
+    public boolean isActivated() {
+		return activated;
+	}
 
-    public LocalDateTime getBirthDate() {
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
+	public LocalDateTime getBirthDate() {
         return birthDate;
     }
 

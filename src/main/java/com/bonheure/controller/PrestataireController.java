@@ -18,22 +18,51 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bonheure.controller.dto.PrestataireDTO;
 import com.bonheure.controller.dto.UserDTO;
+import com.bonheure.security.JwtResponse;
 import com.bonheure.service.PrestataireService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value = "prestataires")
+@Api(tags = "prestataires")
 public class PrestataireController {
 
 	@Autowired
 	private PrestataireService prestataireService;
 	
-	  @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	    @ResponseStatus(HttpStatus.OK) 
-	  public PrestataireDTO savePrestataire(@RequestBody @Valid PrestataireDTO prestataire) {
-
-	        return prestataireService.savePrestataire(prestataire);
-	    }
-	  
+	   //signin
+	
+    @PostMapping("/signin")
+    @ApiOperation(value = "${PrestataireController.signin}")
+    @ApiResponses(value = {//
+    @ApiResponse(code = 400, message = "Something went wrong"), //
+    @ApiResponse(code = 422, message = "Invalid username/password supplied")})
+    public JwtResponse login(//
+        @ApiParam("MobileNumber") @RequestParam String mobileNumber, //
+        @ApiParam("Password") @RequestParam String password) {
+      return prestataireService.signin(mobileNumber, password);
+    }
+      
+	  //sign up
+    
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/signup")
+    @ApiOperation(value = "${PrestataireController.signup}")
+    @ApiResponses(value = {//
+        @ApiResponse(code = 400, message = "Something went wrong"), //
+        @ApiResponse(code = 403, message = "Access denied"), //
+        @ApiResponse(code = 422, message = "Username is already in use"), //
+        @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public PrestataireDTO savePrestataire(@ApiParam("Signup Prestataire") @RequestBody @Valid PrestataireDTO prestataire) {
+        return prestataireService.savePrestataire(prestataire);
+    }
+	    
+		//getPrestataireByReference
 	  
 	  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	    @ResponseStatus(HttpStatus.OK)
@@ -45,14 +74,14 @@ public class PrestataireController {
 
 	    @PutMapping("/{reference}")
 	    @ResponseStatus(HttpStatus.OK)
-	    public PrestataireDTO updateUser(@PathVariable(value = "reference") String reference, @Valid @RequestBody PrestataireDTO prestataire) {
+	    public PrestataireDTO updatePrestataire(@PathVariable(value = "reference") String reference, @Valid @RequestBody PrestataireDTO prestataire) {
 	        return prestataireService.updatePrestataireByReference(reference, prestataire);
 	    }
 	    
-	    @DeleteMapping("/{reference}")
+	   /* @DeleteMapping("/{reference}")
 	    @ResponseStatus(HttpStatus.OK)
 	    public void deletPrestataire(@PathVariable(value = "reference") String reference) {
 	        prestataireService.deletePrestataireByReference(reference);
-	    }
+	    }*/
 
 }

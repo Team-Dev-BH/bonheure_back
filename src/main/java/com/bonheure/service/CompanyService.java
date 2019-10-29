@@ -19,7 +19,8 @@ public class CompanyService {
     @Autowired
     private ApiMapper apiMapper;
 
-
+//savecompany
+    
     public CompanyDTO saveCompany(CompanyDTO companyDTO) {
     	
     	companyDTO.setReference(UUID.randomUUID().toString());
@@ -31,8 +32,7 @@ public class CompanyService {
         return companyDTO;
 
     }
-
-
+    //getcompanybyreference
     public CompanyDTO getCompanyByReference(String reference) {
         Company company = companyRepository.findOneByReference(reference).
         		orElse(null);
@@ -45,12 +45,15 @@ public class CompanyService {
         return companyDTO;
     } 
 
+    
+    //deletecompanyByReference
       public void deleteCompanyByReference(String reference) {
         Company company = companyRepository.findOneByReference(reference).orElse(null);
         companyRepository.delete(company);
 
     } 
 
+      //updateCompanyReference
      public CompanyDTO updateCompanyByReference(String reference, CompanyDTO companyDTO) {
         Company companyOld = companyRepository.findOneByReference(reference).orElse(null);
          

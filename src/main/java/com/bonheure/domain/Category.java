@@ -1,41 +1,65 @@
 package com.bonheure.domain;
 
+import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.*;
 
+import com.bonheure.controller.dto.PrestationDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 @Entity
-@Table(indexes = {@Index(name = "index_category_reference", columnList = "reference", unique = true)})
-public class Category {
+@Table(indexes = { @Index(name = "index_category_reference", columnList = "reference", unique = true) })
+public class Category implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4443853764079923105L;
 
-    @Column(unique = true)
-    private String reference;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
+	@Column(unique = true)
+	private String reference;
 
-    public Long getId() {
-        return id;
-    }
+	@Column(unique = true)
+	private String name;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@ManyToMany(mappedBy = "categories")
+	private Set<Prestation> prestations;
 
-    public String getReference() {
-        return reference;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getReference() {
+		return reference;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public Set<Prestation> getPrestations() {
+		return prestations;
+	}
+
+	public void setPrestations(Set<Prestation> prestations) {
+		this.prestations = prestations;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

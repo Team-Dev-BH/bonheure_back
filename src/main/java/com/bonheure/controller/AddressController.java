@@ -4,6 +4,9 @@ import com.bonheure.controller.dto.AddressDTO;
 import com.bonheure.controller.dto.CategoryDTO;
 import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.service.AddressService;
+
+import io.swagger.annotations.Api;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "address")
+@Api(tags = "address")
 public class AddressController {
 
 

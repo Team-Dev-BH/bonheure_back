@@ -20,6 +20,7 @@ public class WorkingAreaService {
     private ApiMapper apiMapper;
     
     
+    // save WorkingArea
     
     public WorkingAreaDTO saveWorkingArea(WorkingAreaDTO workingAreaDTO) {
 
@@ -31,6 +32,7 @@ public class WorkingAreaService {
 
     }
     
+    //get WorkingAreaByReference 
     
     public WorkingAreaDTO getWorkingAreaByReference(String reference) {
     	WorkingArea workingArea = workingAreaRepository.findOneByReference(reference).
@@ -43,6 +45,7 @@ public class WorkingAreaService {
         return workingAreaDTO;
     }
     
+    //delete WorkingArearByReference
     
     public void deleteWorkingArearByReference(String reference) {
     	WorkingArea workingArea = workingAreaRepository.findOneByReference(reference).
@@ -52,6 +55,7 @@ public class WorkingAreaService {
         workingAreaRepository.delete(workingArea);
 
     }
+    //update WorkingAreaByReference 
     
     public WorkingAreaDTO updateWorkingAreaByReference(String reference, WorkingAreaDTO workingAreaDTO) {
 

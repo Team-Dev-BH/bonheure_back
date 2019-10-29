@@ -2,30 +2,11 @@ package com.bonheure.controller.dto;
 
 import java.util.Set;
 
-import javax.persistence.Column;
-
 public class CompanyDTO {
 
 	private String reference;
 
 	private String code;
-	
-	 @Column(unique = true)
-    private String  domainName ; 
-
-	/**
-	 * @return the domainName
-	 */
-	public String getDomainName() {
-		return domainName;
-	}
-
-	/**
-	 * @param domainName the domainName to set
-	 */
-	public void setDomainName(String domainName) {
-		this.domainName = domainName;
-	}
 
 	private String name;
 

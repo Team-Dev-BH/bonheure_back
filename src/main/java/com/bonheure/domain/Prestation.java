@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -21,7 +22,7 @@ public class Prestation  implements Serializable{
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> tags;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Category> categories;
 
     @ManyToOne
@@ -75,4 +76,18 @@ public class Prestation  implements Serializable{
     public void setParent(Prestation parent) {
         this.parent = parent;
     }
+
+    @Override
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // TODO Auto-generated method stub
+        return super.equals(obj);
+    }
+
+    
 }

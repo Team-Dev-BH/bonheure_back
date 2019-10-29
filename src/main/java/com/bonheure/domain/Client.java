@@ -19,6 +19,8 @@ public class Client extends User {
 
 	@OneToOne
 	private Address address;
+	
+
 
 	public String getCompanyCode() {
 		return companyCode;

@@ -20,26 +20,12 @@ public class Company {
     @OneToMany
     private Set<Address> addresses;
 
-    private String  domainName ; 
-    /**
-	 * @return the domainName
-	 */
-	public String getDomainName() {
-		return domainName;
-	}
-
-	/**
-	 * @param domainName the domainName to set
-	 */
-	public void setDomainName(String domainName) {
-		this.domainName = domainName;
-	}
-
-	private String code;
+    private String code;
 
     private String name;
 
     private String activityField;
+    
 	private String domainName ; 
 
     private String description;

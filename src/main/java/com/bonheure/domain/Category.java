@@ -1,5 +1,7 @@
 package com.bonheure.domain;
 
+import java.util.Objects;
+
 import javax.persistence.*;
 
 @Entity
@@ -38,4 +40,18 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // TODO Auto-generated method stub
+        return super.equals(obj);
+    }
+
+    
 }

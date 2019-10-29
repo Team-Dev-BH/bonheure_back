@@ -3,19 +3,23 @@ package com.bonheure.utils;
 import com.bonheure.controller.dto.AddressDTO;
 import com.bonheure.controller.dto.CategoryDTO;
 import com.bonheure.controller.dto.ClientDTO;
+import com.bonheure.controller.dto.CommandeDTO;
 import com.bonheure.controller.dto.CompanyDTO;
 import com.bonheure.controller.dto.GroupDTO;
 import com.bonheure.controller.dto.PrestataireDTO;
 import com.bonheure.controller.dto.PrestationDTO;
+import com.bonheure.controller.dto.QuotationDTO;
 import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.controller.dto.WorkingAreaDTO;
 import com.bonheure.domain.Address;
 import com.bonheure.domain.Category;
 import com.bonheure.domain.Client;
+import com.bonheure.domain.Commande;
 import com.bonheure.domain.Company;
 import com.bonheure.domain.Group;
 import com.bonheure.domain.Prestataire;
 import com.bonheure.domain.Prestation;
+import com.bonheure.domain.Quotation;
 import com.bonheure.domain.User;
 import com.bonheure.domain.WorkingArea;
 import com.bonheure.repository.*;
@@ -50,6 +54,20 @@ public abstract class ApiMapper {
 
 	@Autowired
 	WorkingAreaRepository workingAreaRepository;
+	
+	@Autowired
+	CommandeRepository commandeRepository;
+	
+	@Autowired
+	ClientRepository clientRepository;
+	
+	@Autowired
+	QuotationRepository quotationRepository;
+	
+	@Autowired
+	PrestataireRepository prestataireRepository;
+	
+	
 
 	// group
 	@Mappings({ @Mapping(target = "reference", ignore = true),
@@ -207,7 +225,7 @@ public abstract class ApiMapper {
 	public abstract Prestation fromDTOToBean(PrestationDTO dto);
 
 	@Mappings({ @Mapping(source = "parent.reference", target = "parentReference"),
-			@Mapping(expression = "java(bean.getCategories().stream().map(caterory -> caterory.getReference()).collect(Collectors.toSet()))", target = "categoriesReferences"), })
+			@Mapping(expression = "java(bean.getCategories().stream().map(category -> category.getReference()).collect(Collectors.toSet()))", target = "categoriesReferences"), })
 	public abstract PrestationDTO fromBeanToDTO(Prestation bean);
 
 	@Mappings({ @Mapping(target = "reference", ignore = true),
@@ -217,5 +235,49 @@ public abstract class ApiMapper {
 			@Mapping(target = "parent", expression = "java(prestationRepository.findOneByReference(dto.getParentReference()).orElse(null))"), })
 
 	public abstract void updateBeanFromDto(PrestationDTO dto, @MappingTarget Prestation bean);
+	
+	//Commande;
+	
+	@Mappings({ @Mapping(target = "creationDate", ignore = true),
+		@Mapping(target = "address", expression = "java(addressRepository.findOneByReference(dto.getAdressReference()).orElse(null))"),
+		@Mapping(target = "category", expression = "java(categoryRepository.findOneByReference(dto.getcategoryReference()).orElse(null))"),
+	    @Mapping(target = "client", expression = "java(clientRepository.findOneByReference(dto.getclientReference()).orElse(null))"),
+        @Mapping(target = "prestation", expression = "java(prestationRepository.findOneByReference(dto.getprestationReference()).orElse(null))")})
 
+		public abstract Commande fromDTOToBean(CommandeDTO dto);
+	
+	@Mappings({ @Mapping(source = "address.reference", target = "adressReference"),
+		@Mapping(source = "category.reference", target = "categoryReference"),
+		@Mapping(source = "client.reference", target = "clientReference"),
+		@Mapping(source = "prestation.reference", target = "prestationReference"),
+		@Mapping(target = "creationDate", ignore = true)})
+		public abstract CommandeDTO fromBeanToDTO(Commande bean);
+	
+	
+
+	@Mappings({ @Mapping(target = "reference", ignore = true), @Mapping(target = "creationDate", ignore = true),
+	    @Mapping(target = "client", expression = "java(clientRepository.findOneByReference(dto.getclientReference()).orElse(null))"),
+	
+	})
+	public abstract void updateBeanFromDto(CommandeDTO dto, @MappingTarget Commande bean);
+
+	
+	//quotation;
+	
+	@Mappings({
+		@Mapping(target = "prestataire", expression = "java(prestataireRepository.findOneByReference(dto.getprestataireReference()).orElse(null))"),
+		@Mapping(target = "commande", expression = "java(commandeRepository.findOneByReference(dto.getcommandeReference()).orElse(null))"),
+	    })
+		public abstract Quotation fromDTOToBean(QuotationDTO dto);
+	
+	
+	@Mappings({ 
+		@Mapping(source = "prestataire.reference", target = "prestataireReference"),
+		@Mapping(source = "commande.reference", target = "commandeReference"),
+		})
+		public abstract QuotationDTO fromBeanToDTO(Quotation bean);
+	
+	
+	public abstract void updateBeanFromDto(QuotationDTO dto, @MappingTarget Quotation bean);
+	
 }

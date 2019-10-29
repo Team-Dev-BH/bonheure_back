@@ -52,9 +52,9 @@ public class ClientService {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-			if (clientRepository.findByEmail(email).isActivated() == false) {
+			/*if (clientRepository.findByEmail(email).isActivated() == false) {
 				throw new CustomException("Account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY);
-			}
+			}*/
 
 			Role authority = clientRepository.findByEmail(email).getRole();
 
@@ -100,6 +100,8 @@ public class ClientService {
 			clientDTO.setCompanyReference(verifyCompany(clientDTO).getReference());
 
 			clientDTO.setPassword(passwordEncoder.encode(clientDTO.getPassword()));
+			
+			clientDTO.setActivated(true);
 
 			client = apiMapper.fromDTOToBean(clientDTO);
 

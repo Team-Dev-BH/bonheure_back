@@ -69,7 +69,7 @@ public class UserService {
 
 		if (userRepository.existsByEmail(userDTO.getEmail()) == false) {
 			userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-
+            userDTO.setActivated(true);
 			user = apiMapper.fromDTOToBean(userDTO);
 			userRepository.save(user);
 

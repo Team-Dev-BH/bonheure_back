@@ -1,13 +1,17 @@
 package com.bonheure.controller;
 
 import com.bonheure.controller.dto.CompanyDTO;
+import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.service.CompanyService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+ 
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,31 +24,49 @@ public class CompanyController {
     @Autowired
     CompanyService companyService;
 
-
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
+//PostCompanny
+    
+    
+        @ResponseStatus(HttpStatus.OK)
+        @PostMapping("/saveCompany")
+        @ApiOperation(value = "${CompanyController.saveCompany}")
+        @ApiResponses(value = {//
+        @ApiResponse(code = 400, message = "Something went wrong"), //
+        @ApiResponse(code = 403, message = "Access denied"), //
+        @ApiResponse(code = 422, message = "Company is already in use")})
     public CompanyDTO saveCompany(@RequestBody @Valid CompanyDTO company) {
 
         return companyService.saveCompany(company);
     }
-
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public CompanyDTO getCompany(@RequestParam(required = false) String reference) {
+        
+      //GetCompany 
+    @GetMapping("/getCompanyByReference")
+    @ApiOperation(value = "${CompanyController.getCompanyByReference}", response = UserDTO.class)
+    @ApiResponses(value = {//
+    @ApiResponse(code = 400, message = "Something went wrong"), //
+    @ApiResponse(code = 403, message = "Access denied"), //
+    @ApiResponse(code = 404, message = "The company doesn't exist")})
+    public CompanyDTO getCompanyByReference(@RequestParam(required = false) String reference) {
 
         return companyService.getCompanyByReference(reference);
     }
 
-
-     @DeleteMapping("/{reference}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteCompany(@PathVariable(value = "reference") String reference) {
+//deleteCompany
+      
+     @DeleteMapping("/deleteCompanyByReference")
+     @ApiOperation(value = "${CompanyController.deleteCompanyByReference}")
+     @ApiResponses(value = {//
+     @ApiResponse(code = 400, message = "Something went wrong"), //
+     @ApiResponse(code = 403, message = "Access denied"), //
+     @ApiResponse(code = 404, message = "The Company doesn't exist")})
+    public void deleteCompanyByReference(@PathVariable(value = "reference") String reference) {
         companyService.deleteCompanyByReference(reference);
     } 
 
-
-     @PutMapping("/{reference}")
-    @ResponseStatus(HttpStatus.OK)
+//updateCompanyByReference
+     
+     @PutMapping("/updateCompanyByReference")
+     @ApiOperation(value = "${CompanyController.updateCompanyByReference}")
     public CompanyDTO updateCompany(@PathVariable(value = "reference") String reference, @Valid @RequestBody CompanyDTO company) {
         return companyService.updateCompanyByReference(reference, company);
     } 

@@ -25,6 +25,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", imports = { Collectors.class })
@@ -81,8 +82,8 @@ public abstract class ApiMapper {
 	@Mappings({ @Mapping(target = "password", ignore = true) })
 	public abstract UserDTO fromBeanToDTO(User bean);
 
-	@Mappings({ @Mapping(target = "creationDate", ignore = true), @Mapping(target = "modificationDate", ignore = true),
-			@Mapping(target = "activated", ignore = true) })
+	@Mappings({ @Mapping(target = "creationDate", ignore = true),
+			@Mapping(target = "modificationDate", ignore = true) })
 	public abstract User fromDTOToBean(UserDTO dto);
 
 	// Working Area
@@ -99,14 +100,21 @@ public abstract class ApiMapper {
 
 	// Category
 
-	@Mappings({ @Mapping(target = "reference", ignore = true) })
+	@Mappings({ @Mapping(target = "reference", ignore = true),
+		@Mapping(expression = "java(dto.getPrestationsNames().stream()"
+				+ ".map(name -> prestationRepository.findOneByName(name).orElse(null))"
+				+ ".filter(prestation -> prestation != null)" + ".collect(Collectors.toSet()))", target = "prestations")})
 	public abstract void updateBeanFromDto(CategoryDTO dto, @MappingTarget Category bean);
 
-	@Mappings({})
+	@Mappings({	@Mapping(expression = "java(bean.getPrestations().stream().map(prestation -> prestation.getName())."
+			+ "collect(Collectors.toSet()))", target = "prestationsNames")})
 	public abstract CategoryDTO fromBeanToDTO(Category bean);
 
-	@Mappings({})
+	@Mappings({@Mapping(expression = "java(dto.getPrestationsNames().stream()"
+			+ ".map(name -> prestationRepository.findOneByName(name).orElse(null))"
+			+ ".filter(prestation -> prestation != null)" + ".collect(Collectors.toSet()))", target = "prestations"),})
 	public abstract Category fromDTOToBean(CategoryDTO dto);
+
 
 	// Adress
 
@@ -180,6 +188,7 @@ public abstract class ApiMapper {
 	public abstract Prestataire fromDTOToBean(PrestataireDTO dto);
 
 	@Mappings({ @Mapping(source = "address.reference", target = "addressReference"),
+
 			@Mapping(expression = "java(bean.getPrestations().stream().map(prestation -> prestation.getReference()).collect(Collectors.toSet()))", target = "prestationReferences"),
 			@Mapping(expression = "java(bean.getWorkingAreas().stream().map(workingArea -> workingArea.getReference()).collect(Collectors.toSet()))", target = "workingAreasReferences") })
 	public abstract PrestataireDTO fromBeanToDTO(Prestataire bean);
@@ -200,22 +209,22 @@ public abstract class ApiMapper {
 	// Prestation
 
 	@Mappings({
-			@Mapping(expression = "java(dto.getCategoriesReferences().stream()"
-					+ ".map(reference -> categoryRepository.findOneByReference(reference).orElse(null))"
-					+ ".filter(category -> category != null)" + ".collect(Collectors.toSet()))", target = "categories"),
-			@Mapping(target = "parent", expression = "java(prestationRepository.findOneByReference(dto.getParentReference()).orElse(null))"), })
-	public abstract Prestation fromDTOToBean(PrestationDTO dto);
+		@Mapping(expression = "java(dto.getCategoriesNames().stream()"
+		+ ".map(name -> categoryRepository.findOneByName(name).orElse(null))"
+		+ ".filter(category -> category != null)" + ".collect(Collectors.toSet()))", target = "categories"),
+		@Mapping(target = "parent", expression = "java(prestationRepository.findOneByReference(dto.getParentReference()).orElse(null))"), })
+		public abstract Prestation fromDTOToBean(PrestationDTO dto);
 
-	@Mappings({ @Mapping(source = "parent.reference", target = "parentReference"),
-			@Mapping(expression = "java(bean.getCategories().stream().map(caterory -> caterory.getReference()).collect(Collectors.toSet()))", target = "categoriesReferences"), })
-	public abstract PrestationDTO fromBeanToDTO(Prestation bean);
+		@Mappings({ @Mapping(source = "parent.reference", target = "parentReference"),
+		@Mapping(expression = "java(bean.getCategories().stream().map(caterory -> caterory.getName()).collect(Collectors.toSet()))", target = "categoriesNames"), })
+		public abstract PrestationDTO fromBeanToDTO(Prestation bean);
 
-	@Mappings({ @Mapping(target = "reference", ignore = true),
-			@Mapping(expression = "java(dto.getCategoriesReferences().stream()"
-					+ ".map(reference -> categoryRepository.findOneByReference(reference).orElse(null))"
-					+ ".filter(category -> category != null)" + ".collect(Collectors.toSet()))", target = "categories"),
-			@Mapping(target = "parent", expression = "java(prestationRepository.findOneByReference(dto.getParentReference()).orElse(null))"), })
+		@Mappings({ @Mapping(target = "reference", ignore = true),
+		@Mapping(expression = "java(dto.getCategoriesNames().stream()"
+		+ ".map(name -> categoryRepository.findOneByName(name).orElse(null))"
+		+ ".filter(category -> category != null)" + ".collect(Collectors.toSet()))", target = "categories"),
+		@Mapping(target = "parent", expression = "java(prestationRepository.findOneByReference(dto.getParentReference()).orElse(null))"), })
 
-	public abstract void updateBeanFromDto(PrestationDTO dto, @MappingTarget Prestation bean);
+		public abstract void updateBeanFromDto(PrestationDTO dto, @MappingTarget Prestation bean);
 
 }

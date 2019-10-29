@@ -25,6 +25,8 @@ public class Company {
     private String name;
 
     private String activityField;
+    
+    
 	private String domainName ; 
 
     private String description;

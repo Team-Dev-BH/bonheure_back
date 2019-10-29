@@ -47,8 +47,8 @@ public class User {
 
     private LocalDateTime activationDate;
 
-    @Column(name = "activated", nullable = false)
-    private boolean activated=false ;
+    
+    private boolean activated ;
 
     @Enumerated(EnumType.STRING)
     private Role role;

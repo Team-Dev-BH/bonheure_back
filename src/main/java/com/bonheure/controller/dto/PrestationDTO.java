@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.bonheure.domain.Prestation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class PrestationDTO {
 
@@ -13,10 +15,19 @@ public class PrestationDTO {
 
 	private List<String> tags;
 
-	private Set<String> categoriesReferences;
-
 	private String parentReference;
-	
+
+	private Set<String> categoriesNames;
+
+	 
+
+	public Set<String> getCategoriesNames() {
+		return categoriesNames;
+	}
+
+	public void setCategoriesNames(Set<String> categoriesNames) {
+		this.categoriesNames = categoriesNames;
+	}
 
 	public String getParentReference() {
 		return parentReference;
@@ -49,15 +60,5 @@ public class PrestationDTO {
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
-
-	public Set<String> getCategoriesReferences() {
-		return categoriesReferences;
-	}
-
-	public void setCategoriesReferences(Set<String> categoriesReferences) {
-		this.categoriesReferences = categoriesReferences;
-	}
-
-	// private String parent;
 
 }

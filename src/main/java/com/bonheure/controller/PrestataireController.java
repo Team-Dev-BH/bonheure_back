@@ -36,6 +36,7 @@ public class PrestataireController {
 	private PrestataireService prestataireService;
 	
 	   //signin
+	
     @PostMapping("/signin")
     @ApiOperation(value = "${PrestataireController.signin}")
     @ApiResponses(value = {//
@@ -48,19 +49,20 @@ public class PrestataireController {
     }
       
 	  //sign up
-	  @ResponseStatus(HttpStatus.OK)
-	    @PostMapping("/signup")
-	    @ApiOperation(value = "${PrestataireController.signup}")
-	    @ApiResponses(value = {//
-	        @ApiResponse(code = 400, message = "Something went wrong"), //
-	        @ApiResponse(code = 403, message = "Access denied"), //
-	        @ApiResponse(code = 422, message = "Username is already in use"), //
-	        @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-	    public PrestataireDTO savePrestataire(@ApiParam("Signup Prestataire") @RequestBody @Valid PrestataireDTO prestataire) {
-	        return prestataireService.savePrestataire(prestataire);
-	    }
+    
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/signup")
+    @ApiOperation(value = "${PrestataireController.signup}")
+    @ApiResponses(value = {//
+        @ApiResponse(code = 400, message = "Something went wrong"), //
+        @ApiResponse(code = 403, message = "Access denied"), //
+        @ApiResponse(code = 422, message = "Username is already in use"), //
+        @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    public PrestataireDTO savePrestataire(@ApiParam("Signup Prestataire") @RequestBody @Valid PrestataireDTO prestataire) {
+        return prestataireService.savePrestataire(prestataire);
+    }
 	    
-	  //
+		//getPrestataireByReference
 	  
 	  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	    @ResponseStatus(HttpStatus.OK)
@@ -72,14 +74,14 @@ public class PrestataireController {
 
 	    @PutMapping("/{reference}")
 	    @ResponseStatus(HttpStatus.OK)
-	    public PrestataireDTO updateUser(@PathVariable(value = "reference") String reference, @Valid @RequestBody PrestataireDTO prestataire) {
+	    public PrestataireDTO updatePrestataire(@PathVariable(value = "reference") String reference, @Valid @RequestBody PrestataireDTO prestataire) {
 	        return prestataireService.updatePrestataireByReference(reference, prestataire);
 	    }
 	    
-	    @DeleteMapping("/{reference}")
+	   /* @DeleteMapping("/{reference}")
 	    @ResponseStatus(HttpStatus.OK)
 	    public void deletPrestataire(@PathVariable(value = "reference") String reference) {
 	        prestataireService.deletePrestataireByReference(reference);
-	    }
+	    }*/
 
 }

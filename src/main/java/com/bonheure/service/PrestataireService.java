@@ -36,13 +36,16 @@ public class PrestataireService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
+	
+	
+	 //sign up
 	public PrestataireDTO savePrestataire(PrestataireDTO prestataireDTO) {
 
 		prestataireDTO.setReference(UUID.randomUUID().toString());
 		Prestataire prestataire = new Prestataire();
 		if (prestataireRepository.existsByMobileNumber(prestataireDTO.getMobileNumber()) == false) {
 			prestataireDTO.setPassword(passwordEncoder.encode(prestataireDTO.getPassword()));
-
+             prestataireDTO.setActivated(false);
 			prestataire = apiMapper.fromDTOToBean(prestataireDTO);
 			prestataireRepository.save(prestataire);
 			return prestataireDTO;
@@ -52,9 +55,16 @@ public class PrestataireService {
 
 	}
 
+	//signin
+	
 	public JwtResponse signin(String mobileNumber, String password) {
 
 		try {
+			
+			if (prestataireRepository.findByMobileNumber(mobileNumber).isActivated() == false) {
+				throw new CustomException("Account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY);
+				}
+
 
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(mobileNumber, password));
 			
@@ -73,6 +83,8 @@ public class PrestataireService {
 		}
 	}
 
+	//getPrestataireByReference
+	
 	public PrestataireDTO getPrestataireByReference(String reference) {
 		Prestataire prestataire = prestataireRepository.findOneByReference(reference).orElse(null);
 
@@ -83,6 +95,9 @@ public class PrestataireService {
 		return prestataireDTO;
 	}
 
+	
+	//updatePrestataireByReference
+	
 	public PrestataireDTO updatePrestataireByReference(String reference, PrestataireDTO prestataireDTO) {
 
 		Prestataire oldPrestataire = prestataireRepository.findOneByReference(reference).orElse(null);
@@ -95,12 +110,13 @@ public class PrestataireService {
 		return prestataireDTO;
 
 	}
-
+	
+/*//deletePrestataireByReference
 	public void deletePrestataireByReference(String reference) {
 		Prestataire prestataire = prestataireRepository.findOneByReference(reference).orElse(null);
 
 		prestataireRepository.delete(prestataire);
 
-	}
+	}*/
 
 }

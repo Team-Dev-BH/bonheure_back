@@ -6,6 +6,9 @@ import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.service.AddressService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +26,15 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+
     @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/save")
+    @ApiOperation(value = "${UserController.signup}")
+    @ApiResponses(value = {//
+        @ApiResponse(code = 400, message = "Something went wrong"), //
+        @ApiResponse(code = 403, message = "Access denied"), //
+        @ApiResponse(code = 422, message = "Email is already in use"), //
+        @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     public AddressDTO saveAddress(@RequestBody @Valid AddressDTO adresse) {
 
         return addressService.saveAddress(adresse);

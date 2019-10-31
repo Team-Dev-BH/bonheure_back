@@ -53,23 +53,19 @@ public abstract class ApiMapper {
 
 	// group
 	@Mappings({ @Mapping(target = "reference", ignore = true),
-			@Mapping(target = "company", expression = "java(companyRepository.findOneByReference(dto.getCompanyReference()).orElse(null))"),
 			@Mapping(expression = "java(dto.getPrestationReferences().stream()"
 					+ ".map(reference -> prestationRepository.findOneByReference(reference).orElse(null))"
 					+ ".filter(prestation -> prestation != null)"
 					+ ".collect(Collectors.toSet()))", target = "prestations") })
 	public abstract void updateBeanFromDto(GroupDTO dto, @MappingTarget Group bean);
 
-	@Mappings({ @Mapping(source = "company.reference", target = "companyReference"),
+	@Mappings({
 			@Mapping(expression = "java(bean.getPrestations().stream().map(prestation -> prestation.getReference()).collect(Collectors.toSet()))", target = "prestationReferences"), })
 	public abstract GroupDTO fromBeanToDTO(Group bean);
 
-	@Mappings({
-			@Mapping(target = "company", expression = "java(companyRepository.findOneByReference(dto.getCompanyReference()).orElse(null))"),
-			@Mapping(expression = "java(dto.getPrestationReferences().stream()"
-					+ ".map(reference -> prestationRepository.findOneByReference(reference).orElse(null))"
-					+ ".filter(prestation -> prestation != null)"
-					+ ".collect(Collectors.toSet()))", target = "prestations"), })
+	@Mappings({ @Mapping(expression = "java(dto.getPrestationReferences().stream()"
+			+ ".map(reference -> prestationRepository.findOneByReference(reference).orElse(null))"
+			+ ".filter(prestation -> prestation != null)" + ".collect(Collectors.toSet()))", target = "prestations"), })
 	public abstract Group fromDTOToBean(GroupDTO dto);
 
 	// user

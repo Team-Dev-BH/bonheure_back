@@ -38,7 +38,7 @@ public class ClientController {
 			@ApiResponse(code = 500, message = "Expired or invalid JWT token") })
 	public String saveClient(@RequestBody @Valid ClientDTO client) {
 
-		return clientService.signUpClient(client);
+		return clientService.signUp(client);
 	}
 
 	// signin
@@ -55,6 +55,7 @@ public class ClientController {
 
 	// getByReference
 	@GetMapping("/getClientByReference")
+	///@PreAuthorize("hasRole('ROLE_ADMIN')") *************************
 	@ApiOperation(value = "${ClientController.getClientByReference}", response = ClientDTO.class)
 	@ApiResponses(value = { //
 			@ApiResponse(code = 400, message = "Something went wrong"), //
@@ -67,8 +68,6 @@ public class ClientController {
 		return clientService.getClientByReference(reference);
 	}
 
-
-
 	// updateClientByreference
 	@PutMapping("/updateClient")
 	@ApiOperation(value = "${ClientController.updateClient}")
@@ -76,9 +75,5 @@ public class ClientController {
 			@Valid @RequestBody ClientDTO client) {
 		return clientService.updateClientByReference(reference, client);
 	}
-	
-	
-	
-	
-	
+
 }

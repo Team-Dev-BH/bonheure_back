@@ -50,17 +50,16 @@ public class ClientService {
 	public JwtResponse signin(String email, String password) {
 
 		try {
+
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-
-			if (clientRepository.findByEmail(email).isActivated() == false) {
-				throw new CustomException("Account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY);
-			}
-
-			Role authority = clientRepository.findByEmail(email).getRole();
+			
+			Client client = clientRepository.findOneByEmail(email).orElse(null);
+			
+			Role authority = client.getRole();
 
 			String jwt = jwtTokenProvider.createToken(email, authority);
 
-			return new JwtResponse(jwt, email, clientRepository.findByEmail(email).getRole().toString());
+			return new JwtResponse(jwt, email, client.getRole().toString());
 
 		} catch (AuthenticationException e) {
 			throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -82,7 +81,7 @@ public class ClientService {
 	}
 
 	// signup
-	public String signUpClient(ClientDTO clientDTO) {
+	public String signUp(ClientDTO clientDTO) {
 
 		clientDTO.setReference(UUID.randomUUID().toString());
 		Client client = new Client();
@@ -100,6 +99,8 @@ public class ClientService {
 			clientDTO.setCompanyReference(verifyCompany(clientDTO).getReference());
 
 			clientDTO.setPassword(passwordEncoder.encode(clientDTO.getPassword()));
+
+			clientDTO.setActivated(true);
 
 			client = apiMapper.fromDTOToBean(clientDTO);
 
@@ -129,8 +130,6 @@ public class ClientService {
 
 	}
 
-
-
 //update
 	public ClientDTO updateClientByReference(String reference, ClientDTO clientDTO) {
 
@@ -147,11 +146,4 @@ public class ClientService {
 		return clientDTO;
 	}
 
-	
-	
-	
-	
-	
-	
-	
 }

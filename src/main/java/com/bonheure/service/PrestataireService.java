@@ -36,13 +36,13 @@ public class PrestataireService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	public PrestataireDTO savePrestataire(PrestataireDTO prestataireDTO) {
+	public PrestataireDTO signUp(PrestataireDTO prestataireDTO) {
 
 		prestataireDTO.setReference(UUID.randomUUID().toString());
 		Prestataire prestataire = new Prestataire();
 		if (prestataireRepository.existsByMobileNumber(prestataireDTO.getMobileNumber()) == false) {
 			prestataireDTO.setPassword(passwordEncoder.encode(prestataireDTO.getPassword()));
-
+			prestataireDTO.setActivated(false);
 			prestataire = apiMapper.fromDTOToBean(prestataireDTO);
 			prestataireRepository.save(prestataire);
 			return prestataireDTO;
@@ -55,18 +55,18 @@ public class PrestataireService {
 	public JwtResponse signin(String mobileNumber, String password) {
 
 		try {
+			Prestataire prestataire = prestataireRepository.findOneByMobileNumber(mobileNumber).orElse(null);
+			if (prestataire.isActivated() == false) {
+				throw new CustomException("Account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(mobileNumber, password));
-			
-			
-		
-			Role authority = prestataireRepository.findByMobileNumber(mobileNumber).getRole();
 
+			Role authority = prestataire.getRole();
 
 			String jwt = jwtTokenProvider.createTokenForPrestataire(mobileNumber, authority);
 
-			return new JwtResponse(jwt, mobileNumber,
-					prestataireRepository.findByMobileNumber(mobileNumber).getRole().getAuthority());
+			return new JwtResponse(jwt, mobileNumber, prestataire.getRole().getAuthority());
 
 		} catch (AuthenticationException e) {
 			throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);

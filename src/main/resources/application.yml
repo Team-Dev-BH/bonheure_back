@@ -23,3 +23,25 @@ spring:
     token:
       secret-key: secret-key
       expire-length: 3600000  # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+  
+    ###### Email Properties ######
+      
+
+  mail: 
+    host: smtp.gmail.com
+    port: 587
+    smtp:
+      starttls: 
+        enable: true
+    username: bonheure.tunisie19@gmail.com
+    password: Bonheure19
+    properties: 
+      mail: 
+        smtp: 
+          starttls:
+            required : true
+          auth : true
+          connectiontimeout : 5000
+          timeout : 5000
+          writetimeout : 5000
+            

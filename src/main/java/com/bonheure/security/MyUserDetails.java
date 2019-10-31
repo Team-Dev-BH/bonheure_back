@@ -27,20 +27,20 @@ public class MyUserDetails implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		final User user;
-		final Prestataire prestataire;
+		///final Prestataire prestataire;
 		// if type of user = client/admin
-		if (isEmail(email)) {
+		if (isEmail(username)) {
 
-			user = userRepository.findByEmail(email);
+			user = userRepository.findOneByEmail(username).orElse(null);
 
 			if (user == null) {
-				throw new UsernameNotFoundException("User with email  '" + email + "' not found");
+				throw new UsernameNotFoundException("User with email  '" + username + "' not found");
 			}
 			
 		return org.springframework.security.core.userdetails.User//
-					.withUsername(email)//
+					.withUsername(username)//
 					.password(user.getPassword())//
 					.authorities(user.getRole())//
 					.accountExpired(false)//
@@ -52,17 +52,17 @@ public class MyUserDetails implements UserDetailsService {
 		}
 		// else if type of user presataire
 
-		prestataire = (Prestataire) prestataireRepository.findByMobileNumber(email);
+	user = userRepository.findOneByMobileNumber(username).orElse(null);
 
-		if (prestataire == null) {
-			throw new UsernameNotFoundException("prestataire with mobile number '" + email + "' not found");
+		if (user == null) {
+			throw new UsernameNotFoundException("prestataire with mobile number '" + username + "' not found");
 		}
 		
 		
 		return org.springframework.security.core.userdetails.User//
-				.withUsername(email)//
-				.password(prestataire.getPassword())//
-				.authorities(prestataire.getRole())//
+				.withUsername(username)//
+				.password(user.getPassword())//
+				.authorities(user.getRole())//
 				.accountExpired(false)//
 				.accountLocked(false)//
 				.credentialsExpired(false)//

@@ -7,6 +7,7 @@ import com.bonheure.domain.User;
 import com.bonheure.repository.GroupRepository;
 import com.bonheure.utils.ApiMapper;
 
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,7 @@ public class GroupService {
         }
         return groupDTO;
     }
-
-
+    
 }
+   
+

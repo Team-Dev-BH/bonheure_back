@@ -43,12 +43,13 @@ public class GroupController {
     }
 
 
-    @PutMapping("/{reference}")
+    @GetMapping("/getGroup")
     @ResponseStatus(HttpStatus.OK)
     public GroupDTO updateGroup(@PathVariable(value = "reference") String reference, @Valid @RequestBody GroupDTO group) {
 
 
         return groupService.updateUGroupByReference(reference, group);
     }
-
+  
+   
 }

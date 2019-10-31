@@ -57,7 +57,7 @@ public class PrestataireController {
 	        @ApiResponse(code = 422, message = "Username is already in use"), //
 	        @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
 	    public PrestataireDTO savePrestataire(@ApiParam("Signup Prestataire") @RequestBody @Valid PrestataireDTO prestataire) {
-	        return prestataireService.savePrestataire(prestataire);
+	        return prestataireService.signUp(prestataire);
 	    }
 	    
 	  //

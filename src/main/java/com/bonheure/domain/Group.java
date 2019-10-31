@@ -61,4 +61,4 @@ public class Group {
     public void setCompany(Company company) {
         this.company = company;
     }
-}
+} 

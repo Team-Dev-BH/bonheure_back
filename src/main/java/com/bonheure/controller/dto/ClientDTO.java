@@ -39,6 +39,14 @@ public class ClientDTO {
 
 	private String companyCode ; 
 	
+	public Boolean getActivated() {
+		return activated;
+	}
+
+	public void setActivated(Boolean activated) {
+		this.activated = activated;
+	}
+
 	public String getCompanyCode() {
 		return companyCode;
 	}
@@ -135,13 +143,6 @@ public class ClientDTO {
 		this.activationDate = activationDate;
 	}
 
-	public Boolean getActivated() {
-		return activated;
-	}
-
-	public void setActivated(Boolean activated) {
-		this.activated = activated;
-	}
 
 	public String getPosition() {
 		return position;

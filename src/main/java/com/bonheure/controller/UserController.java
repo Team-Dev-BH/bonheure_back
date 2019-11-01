@@ -153,8 +153,8 @@ public class UserController {
 			@ApiResponse(code = 403, message = "Access denied"), //
 			@ApiResponse(code = 404, message = "The user doesn't exist"), //
 			@ApiResponse(code = 500, message = "Expired or invalid JWT token") })
-	public UserDTO getLoggedUser(@RequestParam(required = false) String reference) {
+	public User getLoggedUser(@RequestParam(required = false) String reference) {
 
-		return userService.getLoggedUser();
+		return userService.getCurrentUser();
 	}
 }

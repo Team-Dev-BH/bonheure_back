@@ -40,8 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Entry points
 		http.authorizeRequests()//
 				.antMatchers("/**/signin").permitAll()//
-				.antMatchers("/**/signup").permitAll()//
-				.antMatchers("/users/**").hasRole("SUPERADMIN")
+				.antMatchers("/**/signup").permitAll() 
+		        .antMatchers("/**/reset-pswd").permitAll() ; 
+				/*.antMatchers("/users/**").hasRole("SUPERADMIN")
 				.antMatchers("/clients/**").hasAnyAuthority("CLIENT", "SUPERADMIN")//
 				.antMatchers("/prestataires/**").hasAnyAuthority("PRESTATAIRE", "SUPERADMIN")//
 				.antMatchers("/groups/**").hasAuthority("SUPERADMIN")//
@@ -50,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/companies/**").hasAuthority("SUPERADMIN")//
 				.antMatchers("/working areas/**").hasAnyAuthority("PRESTATAIRE", "SUPERADMIN")//
 				.antMatchers("/address/**").hasAnyAuthority("PRESTATAIRE", "SUPERADMIN", "CLIENT")
-				.anyRequest().authenticated();
+				.anyRequest().authenticated(); */
 //.antMatchers(HttpMethod.DELETE).hasAnyAuthority("SUPERADMIN")//
 
 		// If a user try to access a resource without having enough permissions

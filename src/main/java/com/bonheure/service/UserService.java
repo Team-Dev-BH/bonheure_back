@@ -23,6 +23,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import net.minidev.json.JSONObject;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -208,7 +209,9 @@ public class UserService {
 				.orElseThrow(() -> new CustomException("user not found ", HttpStatus.UNPROCESSABLE_ENTITY));
 
 	}
-
+	
+//getLoggedUser
+	
 	public UserDTO getLoggedUser() {
 
 		if (!SecurityUtils.checkIfThereIsUserLogged())
@@ -241,5 +244,7 @@ public class UserService {
 
 		return true;
 	}
+	
+	
 
 }

@@ -46,8 +46,12 @@ public class User {
 
     private LocalDateTime activationDate;
 
-    @Column(name = "activated", nullable = false)
-    private boolean activated=false ;
+    
+   
+    @Column(name = "reset_password_key", length = 20)
+    private String resetPasswordKey;
+ 
+    private boolean activated ;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -135,7 +139,15 @@ public class User {
 
  
 
-    public boolean isActivated() {
+    public String getResetPasswordKey() {
+		return resetPasswordKey;
+	}
+
+	public void setResetPasswordKey(String resetPasswordKey) {
+		this.resetPasswordKey = resetPasswordKey;
+	}
+
+	public boolean isActivated() {
 		return activated;
 	}
 

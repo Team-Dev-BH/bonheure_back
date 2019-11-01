@@ -46,6 +46,12 @@
 			<version>2.7.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/net.minidev/json-smart -->
+		<dependency>
+			<groupId>net.minidev</groupId>
+			<artifactId>json-smart</artifactId>
+			<version>1.0.9</version>
+		</dependency>
 
 
 		<dependency>
@@ -110,7 +116,15 @@
 			<artifactId>spring-security-jwt</artifactId>
 			<version>1.0.10.RELEASE</version>
 		</dependency>
-
+		
+		<dependency>
+		
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.8</version>
+			<scope>provided</scope>
+			
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>

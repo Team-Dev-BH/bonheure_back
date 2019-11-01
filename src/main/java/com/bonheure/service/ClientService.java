@@ -15,6 +15,7 @@ import com.bonheure.security.JwtTokenProvider;
 import com.bonheure.utils.ApiMapper;
 
 import java.util.UUID;
+import net.minidev.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,20 +47,46 @@ public class ClientService {
 	@Autowired
 	private CompanyRepository companyRepository;
 
+//	// signin
+//	public JwtResponse signin(String email, String password) {
+//
+//		try {
+//
+//			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+//			
+//			Client client = clientRepository.findOneByEmail(email).orElse(null);
+//			
+//			Role authority = client.getRole();
+//
+//			String jwt = jwtTokenProvider.createToken(email, authority);
+//
+//			return new JwtResponse(jwt, email, client.getRole().toString());
+//
+//		} catch (AuthenticationException e) {
+//			throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+//		}
+//	}
+
 	// signin
-	public JwtResponse signin(String email, String password) {
+	public JSONObject signin(String email, String password) {
 
 		try {
 
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-			
+
 			Client client = clientRepository.findOneByEmail(email).orElse(null);
-			
+
 			Role authority = client.getRole();
 
 			String jwt = jwtTokenProvider.createToken(email, authority);
 
-			return new JwtResponse(jwt, email, client.getRole().toString());
+			JSONObject result = new JSONObject();
+			result.put("jwt", jwt);
+			result.put("email", email);
+			result.put("companyName", client.getCompany().getName());
+			result.put("result", client.getRole().toString());
+			return result;
+			// return new JwtResponse(jwt, email, client.getRole().toString());
 
 		} catch (AuthenticationException e) {
 			throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);

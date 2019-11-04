@@ -22,8 +22,8 @@ public class User {
 
     @Column(unique = true)
     private String reference;
-    
-	private String firstName;
+
+    private String firstName;
 
     private String lastName;
 
@@ -36,8 +36,8 @@ public class User {
     private String password;
 
     private LocalDateTime birthDate;
-    
-    
+
+
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime creationDate;
@@ -47,11 +47,23 @@ public class User {
 
     private LocalDateTime activationDate;
 
-    
-    private boolean activated ;
+
+    private boolean activated;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+
+    @Column(name = "reset_password_key", length = 20)
+    private String resetPasswordKey;
+
+    public String getResetPasswordKey() {
+        return resetPasswordKey;
+    }
+
+    public void setResetPasswordKey(String resetPasswordKey) {
+        this.resetPasswordKey = resetPasswordKey;
+    }
 
     public Long getId() {
         return id;
@@ -134,17 +146,16 @@ public class User {
         this.activationDate = activationDate;
     }
 
- 
 
     public boolean isActivated() {
-		return activated;
-	}
+        return activated;
+    }
 
-	public void setActivated(boolean activated) {
-		this.activated = activated;
-	}
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
 
-	public LocalDateTime getBirthDate() {
+    public LocalDateTime getBirthDate() {
         return birthDate;
     }
 

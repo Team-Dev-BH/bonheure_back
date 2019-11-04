@@ -1,9 +1,7 @@
 package com.bonheure.controller;
 
 import com.bonheure.controller.dto.CategoryDTO;
-import com.bonheure.controller.dto.PrestationDTO;
 import com.bonheure.controller.dto.UserDTO;
-import com.bonheure.controller.dto.WorkingAreaDTO;
 import com.bonheure.service.CategoryService;
 
 import io.swagger.annotations.Api;
@@ -13,7 +11,6 @@ import io.swagger.annotations.ApiResponses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +20,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "categories")
 @Api(tags = "categories")
+@CrossOrigin("*")
 public class CategoryController {
 
 	@Autowired

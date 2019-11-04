@@ -1,55 +1,115 @@
 package com.bonheure.service;
 
 import com.bonheure.controller.dto.CategoryDTO;
+import com.bonheure.controller.dto.PrestationDTO;
 import com.bonheure.domain.Category;
+import com.bonheure.domain.Prestation;
+import com.bonheure.domain.User;
 import com.bonheure.repository.CategoryRepository;
+import com.bonheure.repository.PrestationRepository;
+import com.bonheure.utils.ApiMapper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class CategoryService {
 
-    @Autowired
-    CategoryRepository categoryRespository;
+	@Autowired
+	CategoryRepository categoryRespository;
 
+	@Autowired
+	PrestationRepository prestationRepository;
+	@Autowired
+	private ApiMapper apiMapper;
 
-    public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
-        Category category = getCategoryFromDto(categoryDTO);
+	// saveCategory
 
-        categoryRespository.save(category);
+	public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
 
-        return categoryDTO;
+		categoryDTO.setReference(UUID.randomUUID().toString());
+		Category category = apiMapper.fromDTOToBean(categoryDTO);
+		categoryRespository.save(category);
 
-    }
+		return categoryDTO;
 
-    public CategoryDTO getCategoryByReference(String reference) {
-        Category category = categoryRespository.findByReference(reference);
+	}
 
-        CategoryDTO categoryDTO = getCategoryDTOFromCategory(category);
+	// getCategoryByReference
 
-        return categoryDTO;
-    }
+	public CategoryDTO getCategoryByReference(String reference) {
+		Category category = categoryRespository.findOneByReference(reference).orElse(null);
 
+		if (category == null)
+			return null;
+		CategoryDTO categoryDTO = apiMapper.fromBeanToDTO(category);
 
-    private CategoryDTO getCategoryDTOFromCategory(Category category) {
+		return categoryDTO;
+	}
 
-        CategoryDTO categoryDTO = new CategoryDTO();
+	// deleteCategoryByReference
 
-        categoryDTO.setName(category.getName());
-        categoryDTO.setReference(category.getReference());
+	public void deleteCategoryByReference(String reference) {
+		Category category = categoryRespository.findOneByReference(reference).orElse(null);
 
-        return categoryDTO;
-    }
+		categoryRespository.delete(category);
 
-    private Category getCategoryFromDto(CategoryDTO categoryDTO) {
+	}
 
-        Category category = new Category();
+	// updateCategoryByReference
 
-        category.setName(categoryDTO.getName());
-        category.setReference(categoryDTO.getReference());
+	/*
+	 * public CategoryDTO updateCategoryByReference(String reference, CategoryDTO
+	 * categoryDTO) {
+	 * 
+	 * //TODO throw exception if not found Category oldCategory=
+	 * categoryRespository.findOneByReference(reference).orElse(null);
+	 * 
+	 * if (oldCategory != null) { apiMapper.updateBeanFromDto(categoryDTO,
+	 * oldCategory); categoryRespository.save(oldCategory); } return categoryDTO; }
+	 */
 
-        return category;
-    }
+	// getAllCategoryByReference
 
+	public List<CategoryDTO> getAllCategory() {
+
+		List<CategoryDTO> categoryDTOs = new ArrayList<CategoryDTO>();
+
+		List<Category> categorys = categoryRespository.findAll();
+
+		for (Category category : categorys) {
+
+			CategoryDTO categoryDTO = apiMapper.fromBeanToDTO(category);
+
+			categoryDTOs.add(categoryDTO);
+
+		}
+
+		return categoryDTOs;
+
+	}
+
+	// //getPrestationFromCategory
+/*
+	public List<PrestationDTO> getListPrestationByCategory(CategoryDTO categoryDTO) {
+
+		if (categoryDTO == null)
+			return null;
+		List<PrestationDTO> prestationDTOs = categoryDTO.getPrestations().stream().map(result -> {
+			Prestation obj = prestationRepository.findOneByReference(result).orElse(null);
+			return apiMapper.fromBeanToDTO(obj);
+		}).collect(Collectors.toList());
+		 
+		return prestationDTOs;
+	}
+*/
+	
+	
 }

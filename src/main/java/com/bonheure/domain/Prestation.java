@@ -1,76 +1,88 @@
 package com.bonheure.domain;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(indexes = {@Index(name = "index_prestation_reference", columnList = "reference", unique = true)})
-public class Prestation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@Table(indexes = { @Index(name = "index_prestation_reference", columnList = "reference", unique = true) })
+public class Prestation implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4396093767348706366L;
 
-    @Column(unique = true)
-    private String reference;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    private String name;
+	@Column(unique = true)
+	private String reference;
+	 @Column(unique = true)
+	private String name;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> tags;
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> tags;
 
-    @ManyToMany
-    private Set<Category> categories;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "prestation_parent_id")
+	private Prestation parent;
 
-    @ManyToOne
-    private Prestation parent;
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Category> categories;
 
+	
 
-    public long getId() {
-        return id;
-    }
+	public Set<Category> getCategories() {
+		return categories;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
 
-    public String getReference() {
-        return reference;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getReference() {
+		return reference;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
 
-    public List<String> getTags() {
-        return tags;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Set<Category> getCategories() {
-        return categories;
-    }
+	public List<String> getTags() {
+		return tags;
+	}
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
 
-    public Prestation getParent() {
-        return parent;
-    }
+	public Prestation getParent() {
+		return parent;
+	}
 
-    public void setParent(Prestation parent) {
-        this.parent = parent;
-    }
+	public void setParent(Prestation parent) {
+		this.parent = parent;
+	}
+
 }

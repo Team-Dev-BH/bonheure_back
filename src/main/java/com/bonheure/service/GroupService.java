@@ -1,8 +1,13 @@
 package com.bonheure.service;
 
 import com.bonheure.controller.dto.GroupDTO;
-import com.bonheure.domain.Group;
+ import com.bonheure.domain.Group;
+ 
 import com.bonheure.repository.GroupRepository;
+import com.bonheure.utils.ApiMapper;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,67 +18,56 @@ public class GroupService {
     GroupRepository groupRepository;
 
 
-    public GroupDTO saveGroup(GroupDTO groupDTO) {
-        Group group = getGroupFromDto(groupDTO);
+    @Autowired
+    private ApiMapper apiMapper;
 
+//savegroup
+    
+    public GroupDTO saveGroup(GroupDTO groupDTO) {
+
+    	groupDTO.setReference(UUID.randomUUID().toString());
+        Group group = apiMapper.fromDTOToBean(groupDTO);
         groupRepository.save(group);
 
         return groupDTO;
 
     }
-
-
+//getgroupByReference
+    
     public GroupDTO getGroupByReference(String reference) {
-        Group group = groupRepository.findByReference(reference);
+    	Group group = groupRepository.findOneByReference(reference).
+                orElse(null);
 
-        GroupDTO groupDTO = getGroupDTOFromGroup(group);
+        if (group == null)
+            return null;
+        GroupDTO groupDTO = apiMapper.fromBeanToDTO(group);
 
         return groupDTO;
     }
 
-    public void deleteGroupByReference(String reference) {
-        Group group = groupRepository.findByReference(reference);
-        groupRepository.delete(group);
+//deleteUGroupByReference
+    
+    public void deleteUGroupByReference(String reference) {
+    	Group group = groupRepository.findOneByReference(reference).
+                orElse(null);
+
+
+    	groupRepository.delete(group);
 
     }
+//updateUGroupByReference
+    public GroupDTO updateUGroupByReference(String reference, GroupDTO groupDTO) {
 
-    public GroupDTO updateGroupByReference(String reference, GroupDTO groupDTO) {
-        Group groupOld = groupRepository.findByReference(reference);
-        Group groupNew = getGroupFromDto(groupDTO);
+        //TODO throw exception if not found
+    	Group oldGroup = groupRepository.findOneByReference(reference).orElse(null);
+       
 
-        if (groupOld != null) {
-            Update(groupOld, groupNew);
+        if (oldGroup  != null) {
+            apiMapper.updateBeanFromDto(groupDTO, oldGroup);
+            groupRepository.save(oldGroup);
         }
         return groupDTO;
     }
 
 
-    private GroupDTO getGroupDTOFromGroup(Group group) {
-
-        GroupDTO groupDTO = new GroupDTO();
-
-        groupDTO.setName(group.getName());
-        groupDTO.setReference(group.getReference());
-
-
-        return groupDTO;
-    }
-
-
-    private Group getGroupFromDto(GroupDTO groupDTO) {
-        Group group = new Group();
-
-        group.setName(groupDTO.getName());
-        group.setReference(groupDTO.getReference());
-
-        return group;
-    }
-
-    private void Update(Group GroupOld, Group GroupNew) {
-
-        GroupOld.setName(GroupNew.getName());
-        GroupOld.setReference(GroupNew.getReference());
-
-        groupRepository.save(GroupOld);
-    }
 }

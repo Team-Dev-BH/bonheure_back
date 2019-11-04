@@ -1,124 +1,159 @@
 package com.bonheure.service;
 
 import com.bonheure.controller.dto.ClientDTO;
+
 import com.bonheure.domain.Client;
+import com.bonheure.domain.Company;
+import com.bonheure.domain.Role;
+import com.bonheure.domain.User;
+import com.bonheure.execption.CustomException;
 import com.bonheure.repository.ClientRepository;
+import com.bonheure.repository.CompanyRepository;
 import com.bonheure.repository.UserRepository;
+import com.bonheure.security.JwtResponse;
+import com.bonheure.security.JwtTokenProvider;
+import com.bonheure.utils.ApiMapper;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 
 public class ClientService {
 
+	@Autowired
+	ClientRepository clientRepository;
 
-    @Autowired
-    ClientRepository clientRepository;
-    @Autowired
-    UserRepository userRepository;
+	@Autowired
+	private ApiMapper apiMapper;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    public ClientDTO saveClient(ClientDTO clientDTO) {
-        Client client = getClientFromDto(clientDTO);
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 
-        clientRepository.save(client);
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
+	@Autowired
+	private CompanyRepository companyRepository;
 
-        return clientDTO;
+	// signin
+	public JwtResponse signin(String email, String password) {
 
-    }
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-    public ClientDTO getClientByReference(String reference) {
-        Client client = clientRepository.findByReference(reference);
+			/*if (clientRepository.findByEmail(email).isActivated() == false) {
+				throw new CustomException("Account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY);
+			}*/
 
-        ClientDTO clientDTO = getClientDTOFromClient(client);
+			Role authority = clientRepository.findByEmail(email).getRole();
 
-        return clientDTO;
-    }
+			String jwt = jwtTokenProvider.createToken(email, authority);
 
-    public void deleteClientByReference(String reference) {
-        Client client = clientRepository.findByReference(reference);
+			return new JwtResponse(jwt, email, clientRepository.findByEmail(email).getRole().toString());
 
-        clientRepository.delete(client);
+		} catch (AuthenticationException e) {
+			throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
 
-    }
+	// company exists by domain
+	public Company verifyCompany(ClientDTO client) {
 
-    public ClientDTO updateClientByReference(String reference, ClientDTO clientDTO) {
-        Client clientOld = clientRepository.findByReference(reference);
-        Client clientNew = getClientFromDto(clientDTO);
+		String domain = client.getEmail().substring(client.getEmail().indexOf("@") + 1);
 
-        if (clientOld != null) {
-            Update(clientOld, clientNew);
+		Company company = companyRepository.findOneByDomainName(domain).orElse(null);
 
-        }
-        return clientDTO;
-    }
+		if (company == null)
+			return null;
 
+		return company;
 
-    private void Update(Client ClientOld, Client ClientNew) {
-        ClientOld.setActivated(ClientNew.getActivated());
-        ClientOld.setActivationDate(ClientNew.getActivationDate());
-        ClientOld.setCreationDate(ClientNew.getCreationDate());
-        ClientOld.setEmail(ClientNew.getEmail());
-        ClientOld.setFirstName(ClientNew.getFirstName());
-        ClientOld.setLastName(ClientNew.getLastName());
-        ClientOld.setMobileNumber(ClientNew.getMobileNumber());
-        ClientOld.setModificationDate(ClientNew.getModificationDate());
-        ClientOld.setPassword(ClientNew.getPassword());
-        ClientOld.setReference(ClientNew.getReference());
+	}
 
+	// signup
+	public String signUpClient(ClientDTO clientDTO) {
 
-        ClientOld.setBirthDate(ClientNew.getBirthDate());
-        ClientOld.setPosition(ClientNew.getPosition());
+		clientDTO.setReference(UUID.randomUUID().toString());
+		Client client = new Client();
 
-        clientRepository.save(ClientOld);
-    }
+		if (!clientRepository.existsByEmail(clientDTO.getEmail())) {
 
-    private ClientDTO getClientDTOFromClient(Client client) {
+			if (verifyCompany(clientDTO) == null) {
+				throw new CustomException("No company for this client is found ", HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 
-        ClientDTO clientDTO = new ClientDTO();
+			if (!verifyCompany(clientDTO).getCode().equals(clientDTO.getCompanyCode())) {
+				throw new CustomException("your code is wrong ", HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 
-        clientDTO.setBirthDate(client.getBirthDate());
-        clientDTO.setPosition(client.getPosition());
+			clientDTO.setCompanyReference(verifyCompany(clientDTO).getReference());
 
-        clientDTO.setActivated(client.getActivated());
-        clientDTO.setActivationDate(client.getActivationDate());
-        clientDTO.setCreationDate(client.getCreationDate());
-        clientDTO.setEmail(client.getEmail());
-        clientDTO.setFirstName(client.getFirstName());
-        clientDTO.setLastName(client.getLastName());
-        clientDTO.setMobileNumber(client.getMobileNumber());
-        clientDTO.setModificationDate(client.getModificationDate());
-        clientDTO.setPassword(client.getPassword());
-        clientDTO.setReference(client.getReference());
+			clientDTO.setPassword(passwordEncoder.encode(clientDTO.getPassword()));
+			
+			clientDTO.setActivated(true);
 
+			client = apiMapper.fromDTOToBean(clientDTO);
 
-        return clientDTO;
-    }
+			clientRepository.save(client);
 
+			return jwtTokenProvider.createToken(client.getEmail(), client.getRole());
+		} else {
+			throw new CustomException("you are already registered", HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 
-    private Client getClientFromDto(ClientDTO clientDTO) {
-        Client client = new Client();
+	}
 
+	// getByReference
 
-        client.setBirthDate(clientDTO.getBirthDate());
-        client.setPosition(clientDTO.getPosition());
+	public ClientDTO getClientByReference(String reference) {
 
-        client.setActivated(clientDTO.getActivated());
-        client.setActivationDate(clientDTO.getActivationDate());
-        client.setCreationDate(clientDTO.getCreationDate());
-        client.setEmail(clientDTO.getEmail());
-        client.setFirstName(clientDTO.getFirstName());
-        client.setLastName(clientDTO.getLastName());
-        client.setLastName(clientDTO.getLastName());
-        client.setMobileNumber(clientDTO.getMobileNumber());
-        client.setModificationDate(clientDTO.getModificationDate());
-        client.setPassword(clientDTO.getPassword());
-        client.setReference(clientDTO.getReference());
+		Client client = clientRepository.findOneByReference(reference).orElse(null);
+
+		if ((client != null)) {
+
+			ClientDTO clientDTO = apiMapper.fromBeanToDTO(client);
+
+			return clientDTO;
+		} else {
+			throw new CustomException("Client does not exist", HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
+	}
 
 
-        return client;
 
+//update
+	public ClientDTO updateClientByReference(String reference, ClientDTO clientDTO) {
 
-    }
+		Client oldClient = clientRepository.findOneByReference(reference).orElse(null);
+
+		if (oldClient != null) {
+
+			clientDTO.setPassword(passwordEncoder.encode(clientDTO.getPassword()));
+
+			apiMapper.updateBeanFromDto(clientDTO, oldClient);
+
+			clientRepository.save(oldClient);
+		}
+		return clientDTO;
+	}
+
+	
+	
+	
+	
+	
+	
+	
 }

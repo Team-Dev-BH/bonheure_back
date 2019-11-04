@@ -12,14 +12,18 @@ public class UserDTO {
     private String firstName;
 
     private String lastName;
-
-    @Email
+    
+     
+ 
+	@Email
     private String email;
 
     private String mobileNumber;
 
     private String password;
-
+    
+    private LocalDateTime birthDate;
+    
     private LocalDateTime creationDate;
 
     private LocalDateTime modificationDate;
@@ -95,15 +99,18 @@ public class UserDTO {
         this.modificationDate = modificationDate;
     }
 
-    public LocalDateTime getActivationDate() {
-        return activationDate;
-    }
 
-    public void setActivationDate(LocalDateTime activationDate) {
-        this.activationDate = activationDate;
-    }
+   
 
-    public Boolean getActivated() {
+	public LocalDateTime getActivationDate() {
+		return activationDate;
+	}
+
+	public void setActivationDate(LocalDateTime activationDate) {
+		this.activationDate = activationDate;
+	}
+
+	public Boolean getActivated() {
         return activated;
     }
 
@@ -118,4 +125,14 @@ public class UserDTO {
     public void setRole(Role role) {
         this.role = role;
     }
+
+	public LocalDateTime getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(LocalDateTime birthDate) {
+		this.birthDate = birthDate;
+	}
+    
+    
 }

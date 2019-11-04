@@ -3,6 +3,10 @@ package com.bonheure.service;
 import com.bonheure.controller.dto.CompanyDTO;
 import com.bonheure.domain.Company;
 import com.bonheure.repository.CompanyRepository;
+import com.bonheure.utils.ApiMapper;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,77 +14,61 @@ import org.springframework.stereotype.Service;
 public class CompanyService {
 
     @Autowired
-    CompanyRepository societyRepository;
+    CompanyRepository companyRepository;
+    
+    @Autowired
+    private ApiMapper apiMapper;
 
-
+//savecompany
+    
     public CompanyDTO saveCompany(CompanyDTO companyDTO) {
-        Company company = getCompanyFromDto(companyDTO);
+    	
+    	companyDTO.setReference(UUID.randomUUID().toString());
+        Company company = apiMapper.fromDTOToBean(companyDTO);
 
-        societyRepository.save(company);
+        companyRepository.save(company);
+        
 
         return companyDTO;
 
     }
-
-
+    //getcompanybyreference
     public CompanyDTO getCompanyByReference(String reference) {
-        Company company = societyRepository.findOneByReference(reference).orElse(null);
+        Company company = companyRepository.findOneByReference(reference).
+        		orElse(null);
+        
+        if (company == null)
+            return null;
 
-        CompanyDTO companyDTO = getCompanyDTOFromCompany(company);
+        CompanyDTO companyDTO = apiMapper.fromBeanToDTO(company);
 
         return companyDTO;
-    }
+    } 
 
-    public void deleteCompanyByReference(String reference) {
-        Company company = societyRepository.findOneByReference(reference).orElse(null);
-        societyRepository.delete(company);
+    
+    //deletecompanyByReference
+      public void deleteCompanyByReference(String reference) {
+        Company company = companyRepository.findOneByReference(reference).orElse(null);
+        companyRepository.delete(company);
 
-    }
+    } 
 
-    public CompanyDTO updateCompanyByReference(String reference, CompanyDTO companyDTO) {
-        Company companyOld = societyRepository.findOneByReference(reference).orElse(null);
-        Company companyNew = getCompanyFromDto(companyDTO);
+      //updateCompanyReference
+     public CompanyDTO updateCompanyByReference(String reference, CompanyDTO companyDTO) {
+        Company companyOld = companyRepository.findOneByReference(reference).orElse(null);
+         
 
         if (companyOld != null) {
-            Update(companyOld, companyNew);
+        	apiMapper.updateBeanFromDto(companyDTO, companyOld);
+            companyRepository.save(companyOld);
+             
         }
         return companyDTO;
-    }
+    } 
 
 
-    private CompanyDTO getCompanyDTOFromCompany(Company company) {
-
-        CompanyDTO companyDTO = new CompanyDTO();
-
-        companyDTO.setActivityField(company.getActivityField());
-        companyDTO.setCode(company.getCode());
-        companyDTO.setName(company.getName());
-        companyDTO.setReference(company.getReference());
+     
 
 
-        return companyDTO;
-    }
-
-
-    private Company getCompanyFromDto(CompanyDTO companyDTO) {
-        Company company = new Company();
-
-        company.setActivityField(companyDTO.getActivityField());
-        company.setCode(companyDTO.getCode());
-        company.setName(companyDTO.getName());
-        company.setReference(companyDTO.getReference());
-        return company;
-    }
-
-    private void Update(Company CompanyOld, Company CompanyNew) {
-
-        CompanyOld.setActivityField(CompanyNew.getActivityField());
-        CompanyOld.setCode(CompanyNew.getCode());
-        CompanyOld.setName(CompanyNew.getName());
-        CompanyOld.setReference(CompanyNew.getReference());
-
-
-        societyRepository.save(CompanyOld);
-    }
-
+     
 }

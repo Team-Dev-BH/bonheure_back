@@ -14,7 +14,7 @@ public class Company {
     @Column(unique = true)
     private String reference;
 
-    @OneToOne
+   @OneToOne
     private Address principalAddress;
 
     @OneToMany
@@ -25,10 +25,21 @@ public class Company {
     private String name;
 
     private String activityField;
+    
+    
+	private String domainName ; 
 
     private String description;
 
-    public Long getId() {
+    public String getDomainName() {
+		return domainName;
+	}
+
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -68,14 +79,14 @@ public class Company {
         this.activityField = activityField;
     }
 
-    public Address getPrincipalAddress() {
+   public Address getPrincipalAddress() {
         return principalAddress;
     }
 
     public void setPrincipalAddress(Address principalAddress) {
         this.principalAddress = principalAddress;
     }
-
+    
     public Set<Address> getAddresses() {
         return addresses;
     }

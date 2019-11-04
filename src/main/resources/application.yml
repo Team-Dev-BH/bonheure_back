@@ -18,3 +18,8 @@ spring:
     password: root
   application:
     name: service-streamlink
+    security:
+  jwt:
+    token:
+      secret-key: secret-key
+      expire-length: 3600000  # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds

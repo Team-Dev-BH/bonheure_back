@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
-@Table(indexes = { @Index(name = "index_category_reference", columnList = "reference", unique = true) })
+@Table(indexes = { @Index(name = "index_category_reference", columnList = "reference", unique = true),
+                   @Index(name="index_category_name", columnList = "name", unique = true)
+})
 public class Category implements Serializable {
 
 	/**

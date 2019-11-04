@@ -27,6 +27,8 @@ public class Category implements Serializable {
 
 	@Column(unique = true)
 	private String name;
+	
+	private String description;
 
 	@ManyToMany(mappedBy = "categories")
 	private Set<Prestation> prestations;
@@ -62,4 +64,19 @@ public class Category implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 }

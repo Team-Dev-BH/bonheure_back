@@ -13,5 +13,5 @@ public interface PrestataireRepository extends JpaRepository<Prestataire, Long> 
 
 	boolean existsByMobileNumber(String mobileNumber);
 
-	Prestataire findByMobileNumber(String mobileNumber);
+	Optional<Prestataire>  findOneByMobileNumber(String mobileNumber);
 }

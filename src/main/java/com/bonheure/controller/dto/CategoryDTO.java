@@ -12,7 +12,7 @@ public class CategoryDTO {
 
 	private String name;
 
-	
+	private String description;
 	
 	private Set<String> prestationsNames;
 
@@ -42,4 +42,19 @@ public class CategoryDTO {
 		this.name = name;
 	}
 
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	
 }

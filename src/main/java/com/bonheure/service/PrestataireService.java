@@ -22,94 +22,92 @@ import com.bonheure.utils.ApiMapper;
 @Service
 public class PrestataireService {
 
-	@Autowired
-	PrestataireRepository prestataireRepository;
+    @Autowired
+    PrestataireRepository prestataireRepository;
 
-	@Autowired
-	private ApiMapper apiMapper;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ApiMapper apiMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
-
-	
-	
-	 //sign up
-	public PrestataireDTO savePrestataire(PrestataireDTO prestataireDTO) {
-
-		prestataireDTO.setReference(UUID.randomUUID().toString());
-		Prestataire prestataire = new Prestataire();
-		if (prestataireRepository.existsByMobileNumber(prestataireDTO.getMobileNumber()) == false) {
-			prestataireDTO.setPassword(passwordEncoder.encode(prestataireDTO.getPassword()));
-             prestataireDTO.setActivated(false);
-			prestataire = apiMapper.fromDTOToBean(prestataireDTO);
-			prestataireRepository.save(prestataire);
-			return prestataireDTO;
-		} else {
-			throw new CustomException("MobileNumber is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
-		}
-
-	}
-
-	//signin
-	
-	public JwtResponse signin(String mobileNumber, String password) {
-
-		try {
-			
-			if (prestataireRepository.findByMobileNumber(mobileNumber).isActivated() == false) {
-				throw new CustomException("Account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY);
-				}
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
 
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(mobileNumber, password));
-			
-			
-		
-			Role authority = prestataireRepository.findByMobileNumber(mobileNumber).getRole();
+    //sign up
+    public PrestataireDTO savePrestataire(PrestataireDTO prestataireDTO) {
+
+        prestataireDTO.setReference(UUID.randomUUID().toString());
+        Prestataire prestataire = new Prestataire();
+        if (prestataireRepository.existsByMobileNumber(prestataireDTO.getMobileNumber()) == false) {
+            prestataireDTO.setPassword(passwordEncoder.encode(prestataireDTO.getPassword()));
+            prestataireDTO.setActivated(false);
+            prestataire = apiMapper.fromDTOToBean(prestataireDTO);
+            prestataireRepository.save(prestataire);
+            return prestataireDTO;
+        } else {
+            throw new CustomException("MobileNumber is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+    }
+
+    //signin
+
+    public JwtResponse signin(String mobileNumber, String password) {
+
+        try {
+            Prestataire prestataire = prestataireRepository.findOneByMobileNumber(mobileNumber).orElse(null);
+            if (prestataire.isActivated() == false) {
+                throw new CustomException("Account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY);
+            }
 
 
-			String jwt = jwtTokenProvider.createTokenForPrestataire(mobileNumber, authority);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(mobileNumber, password));
 
-			return new JwtResponse(jwt, mobileNumber,
-					prestataireRepository.findByMobileNumber(mobileNumber).getRole().getAuthority());
 
-		} catch (AuthenticationException e) {
-			throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
-		}
-	}
+            Role authority = prestataire.getRole();
 
-	//getPrestataireByReference
-	
-	public PrestataireDTO getPrestataireByReference(String reference) {
-		Prestataire prestataire = prestataireRepository.findOneByReference(reference).orElse(null);
 
-		if (prestataire == null)
-			return null;
-		PrestataireDTO prestataireDTO = apiMapper.fromBeanToDTO(prestataire);
+            String jwt = jwtTokenProvider.createTokenForPrestataire(mobileNumber, authority);
 
-		return prestataireDTO;
-	}
+            return new JwtResponse(jwt, mobileNumber,
+                    prestataire.getRole().getAuthority());
 
-	
-	//updatePrestataireByReference
-	
-	public PrestataireDTO updatePrestataireByReference(String reference, PrestataireDTO prestataireDTO) {
+        } catch (AuthenticationException e) {
+            throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
 
-		Prestataire oldPrestataire = prestataireRepository.findOneByReference(reference).orElse(null);
+    //getPrestataireByReference
 
-		if (oldPrestataire != null) {
-			apiMapper.updateBeanFromDto(prestataireDTO, oldPrestataire);
-			prestataireRepository.save(oldPrestataire);
-		}
+    public PrestataireDTO getPrestataireByReference(String reference) {
+        Prestataire prestataire = prestataireRepository.findOneByReference(reference).orElse(null);
 
-		return prestataireDTO;
+        if (prestataire == null)
+            return null;
+        PrestataireDTO prestataireDTO = apiMapper.fromBeanToDTO(prestataire);
 
-	}
+        return prestataireDTO;
+    }
+
+
+    //updatePrestataireByReference
+
+    public PrestataireDTO updatePrestataireByReference(String reference, PrestataireDTO prestataireDTO) {
+
+        Prestataire oldPrestataire = prestataireRepository.findOneByReference(reference).orElse(null);
+
+        if (oldPrestataire != null) {
+            apiMapper.updateBeanFromDto(prestataireDTO, oldPrestataire);
+            prestataireRepository.save(oldPrestataire);
+        }
+
+        return prestataireDTO;
+
+    }
 	
 /*//deletePrestataireByReference
 	public void deletePrestataireByReference(String reference) {

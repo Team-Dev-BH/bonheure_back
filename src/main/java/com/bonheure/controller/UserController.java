@@ -104,9 +104,55 @@ public class UserController {
     public UserDTO updateUser(@RequestParam(required = false) String reference, @Valid @RequestBody UserDTO user) {
         return userService.updateUserByReference(reference, user);
     }
-    
-    
-    
- 
+
+
+    //getLoggedUser
+    @GetMapping("/getLoggedUser")
+    @ApiOperation(value = "${UserController.getLoggedUser}", response = UserDTO.class)
+    @ApiResponses(value = { //
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 404, message = "The user doesn't exist"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token") })
+    public UserDTO getLoggedUser(@RequestParam(required = false) String reference) {
+
+        return userService.getLoggedUser();
+    }
+
+    //Resetpassword
+    @PostMapping("/password/reset")
+    @ApiOperation(value = "${UserController.emailForReset}")
+    @ApiResponses(value = { //
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 422, message = "Invalid email supplied") })
+    public void emailForResetPassword(@ApiParam("Email") @RequestParam String email) {
+        userService.requestResetPassword(email);
+    }
+    // completePasswordReset
+
+  @RequestMapping(value = "password/reset/finish", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Complete Reset Password Service")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Operation Executed Successfully"),
+            @ApiResponse(code = 404, message = "User not Found") })
+    public UserDTO completePasswordReset(@RequestParam("password") String password, @RequestParam("key") String key) {
+
+        UserDTO user = userService.completePasswordReset(password, key);
+        return user;
+    }
+
+    @RequestMapping(value = "password/change", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Change Password Service")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Operation Executed Successfully"),
+            @ApiResponse(code = 400, message = "Password Don't Match"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    public boolean changePassword(@RequestParam("oldPassword") String oldPassword,
+                                  @RequestParam("newPassword") String newPassword) {
+
+        boolean result = userService.changePassword(oldPassword, newPassword);
+
+        return result;
+    }
 }
    

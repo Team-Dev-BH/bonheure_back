@@ -60,6 +60,20 @@ public class PrestationController {
 
 	        return prestationService.getPrestationByReference(reference);
 	    }
+
+
+     //get prestation by name
+	@GetMapping("/getPrestationByName")
+	@ApiOperation(value = "${PrestationController.getPrestationByName}", response = UserDTO.class)
+	@ApiResponses(value = {//
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 403, message = "Access denied"), //
+			@ApiResponse(code = 404, message = "The prestation doesn't exist")})
+
+	public PrestationDTO getPrestationByName(@RequestParam(required = false) String name) {
+
+		return prestationService.getPrestationByName(name);
+	}
 	 
 	 
 	 
@@ -91,7 +105,7 @@ public class PrestationController {
 			@ApiResponse(code = 400, message = "Something went wrong"), //
 			@ApiResponse(code = 403, message = "Access denied"), //
 	})
-	public Set<PrestationDTO> getListPrestationByCategoryName(@RequestParam String categoryName) {
+	public List<PrestationDTO> getListPrestationByCategoryName(@RequestParam String categoryName) {
 
 		return prestationService.getListPrestationByCategoryName(categoryName);
 	}
@@ -104,7 +118,7 @@ public class PrestationController {
 			@ApiResponse(code = 400, message = "Something went wrong"), //
 			@ApiResponse(code = 403, message = "Access denied"), //
 	})
-	public Set<PrestationDTO> getListPrestationByParentName(@RequestParam String ParentName) {
+	public List<PrestationDTO> getListPrestationByParentName(@RequestParam String ParentName) {
 
 		return prestationService.getListPrestationByParentName(ParentName);
 	}

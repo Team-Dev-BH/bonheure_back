@@ -1,5 +1,6 @@
 package com.bonheure.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -57,6 +58,19 @@ public class PrestationService {
         return prestationDTO;
     }
 
+
+    //getPrestationByName
+     public PrestationDTO getPrestationByName(String name){
+
+        Prestation prestation = prestationRepository.findOneByName(name).orElse(null);
+        if(prestation == null)
+         return null;
+        PrestationDTO prestationDTO = apiMapper.fromBeanToDTO(prestation);
+
+        return prestationDTO;
+
+     }
+
     //updatePrestationByReference
 	
 	/*public PrestationDTO updatePrestationByReference(String reference, PrestationDTO prestationDTO) {
@@ -81,24 +95,30 @@ public class PrestationService {
 
     }
 
-    public Set<PrestationDTO> getListPrestationByCategoryName(String categoryName) {
+    //prestation by categorie name:
+    public List<PrestationDTO> getListPrestationByCategoryName(String categoryName) {
 
         Category category = categoryRepository.findOneByName(categoryName).orElse(null);
 
-        Set<PrestationDTO> prestationDTOs = category.getPrestations().stream().map(prestation -> apiMapper.fromBeanToDTO(prestation)).filter(prestationDTO -> prestationDTO.getParentReference() == null).collect(Collectors.toSet());
+        List<PrestationDTO> prestationDTOs = category.getPrestations().stream()
+                .map(prestation -> apiMapper.fromBeanToDTO(prestation))
+                .filter(prestationDTO -> prestationDTO.getParentReference() == null)
+                .collect(Collectors.toList());
 
         return prestationDTOs;
     }
 
-    public Set<PrestationDTO> getListPrestationByParentName(String ParentName) {
+
+    //prestation by parent name :
+    public List<PrestationDTO> getListPrestationByParentName(String ParentName) {
 
 
-        Set<Prestation> prestations = prestationRepository.findAll().stream()
+        List<Prestation> prestations = prestationRepository.findAll().stream()
 				.filter(prestation -> (prestation.getParent()!= null)&&(prestation.getParent().getName().equals(ParentName)))
-				.collect(Collectors.toSet());//
+                .collect(Collectors.toList());//
 
 
-		return  prestations.stream().map(apiMapper::fromBeanToDTO).collect(Collectors.toSet());
+		return  prestations.stream().map(apiMapper::fromBeanToDTO).collect(Collectors.toList());
 
 
     }

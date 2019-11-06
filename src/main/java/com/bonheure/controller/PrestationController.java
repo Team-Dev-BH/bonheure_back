@@ -1,22 +1,14 @@
 package com.bonheure.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
- 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 import com.bonheure.controller.dto.CategoryDTO;
 import com.bonheure.controller.dto.PrestationDTO;
@@ -33,6 +25,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(value = "prestations")
 @Api(tags = "prestations")
+@CrossOrigin("*")
 public class PrestationController {
 
 	@Autowired
@@ -93,17 +86,27 @@ public class PrestationController {
 	    }
  ////getPrestationFromCategory
      
- 	@PostMapping("/prestationByCategoryName")
- 	@ApiResponses(value = { //
- 			@ApiResponse(code = 400, message = "Something went wrong"), //
- 			@ApiResponse(code = 403, message = "Access denied"), //
- 	})
- 	public List<PrestationDTO> getListPrestationByCategoryName(@RequestBody String categoryName) {
- 
- 		return prestationService.getListPrestationByCategoryName(categoryName);
- 	}
-     
+ 	@GetMapping("/prestationByCategoryName")
+	@ApiResponses(value = { //
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 403, message = "Access denied"), //
+	})
+	public Set<PrestationDTO> getListPrestationByCategoryName(@RequestParam String categoryName) {
 
-     
+		return prestationService.getListPrestationByCategoryName(categoryName);
+	}
+
+
+	//getListPrestationByParentName
+
+	@GetMapping("/prestationByParentName")
+	@ApiResponses(value = { //
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 403, message = "Access denied"), //
+	})
+	public Set<PrestationDTO> getListPrestationByParentName(@RequestParam String ParentName) {
+
+		return prestationService.getListPrestationByParentName(ParentName);
+	}
 
 }

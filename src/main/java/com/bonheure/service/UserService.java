@@ -1,5 +1,6 @@
 package com.bonheure.service;
 
+import org.hibernate.hql.internal.ast.tree.IsNotNullLogicOperatorNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.bonheure.controller.dto.UserDTO;
@@ -69,6 +70,8 @@ public class UserService {
 
 			String jwt = jwtTokenProvider.createToken(email, authority);
 
+			
+			
 			return new JwtResponse(jwt, email, userRepository.findByEmail(email).getRole().toString());
 
 		} catch (AuthenticationException e) {

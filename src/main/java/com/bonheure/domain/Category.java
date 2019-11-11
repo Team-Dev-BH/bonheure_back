@@ -12,7 +12,7 @@ public class Category {
 
     @Column(unique = true)
     private String reference;
-
+    @Column(unique = true)
     private String name;
 
     public Long getId() {

@@ -21,14 +21,14 @@ public class GroupController {
     private GroupService groupService;
 
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/save")
     @ResponseStatus(HttpStatus.OK)
     public GroupDTO saveGroup(@RequestBody @Valid GroupDTO group) {
 
         return groupService.saveGroup(group);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/getByReference")
     @ResponseStatus(HttpStatus.OK)
     public GroupDTO getGroup(@RequestParam(required = false) String reference) {
 
@@ -36,14 +36,14 @@ public class GroupController {
     }
 
 
-    @DeleteMapping("/{reference}")
+    @DeleteMapping("/delete/{reference}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteGroup(@PathVariable(value = "reference") String reference) {
         groupService.deleteUGroupByReference(reference);
     }
 
 
-    @GetMapping("/getGroup")
+    @GetMapping("/update")
     @ResponseStatus(HttpStatus.OK)
     public GroupDTO updateGroup(@PathVariable(value = "reference") String reference, @Valid @RequestBody GroupDTO group) {
 

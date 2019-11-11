@@ -46,6 +46,8 @@ public class ClientService {
 
 	@Autowired
 	private CompanyRepository companyRepository;
+	@Autowired
+	private UserRepository userRepository  ; 
 
 //	// signin
 //	public JwtResponse signin(String email, String password) {
@@ -108,7 +110,7 @@ public class ClientService {
 	}
 
 	// signup
-	public String signUp(ClientDTO clientDTO) {
+	public String signUp(ClientDTO clientDTO ) { ///put a code within// 
 
 		clientDTO.setReference(UUID.randomUUID().toString());
 		Client client = new Client();
@@ -172,5 +174,13 @@ public class ClientService {
 		}
 		return clientDTO;
 	}
+	
+	public Client getClientFromUser(String reference) {
+		
+	return	clientRepository.findOneByReference(reference).orElseThrow(() ->new CustomException("Client does not exist", HttpStatus.UNPROCESSABLE_ENTITY));
+		
+		
+		
+	}
 
-}
+} 

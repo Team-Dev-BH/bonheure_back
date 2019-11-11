@@ -21,14 +21,14 @@ public class CompanyController {
     CompanyService companyService;
 
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/save")
     @ResponseStatus(HttpStatus.OK)
     public CompanyDTO saveCompany(@RequestBody @Valid CompanyDTO company) {
 
         return companyService.saveCompany(company);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/getByReference")
     @ResponseStatus(HttpStatus.OK)
     public CompanyDTO getCompany(@RequestParam(required = false) String reference) {
 
@@ -36,14 +36,14 @@ public class CompanyController {
     }
 
 
-     @DeleteMapping("/{reference}")
+     @DeleteMapping("delete/{reference}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCompany(@PathVariable(value = "reference") String reference) {
         companyService.deleteCompanyByReference(reference);
     } 
 
 
-     @PutMapping("/{reference}")
+     @PutMapping("/update/{reference}")
     @ResponseStatus(HttpStatus.OK)
     public CompanyDTO updateCompany(@PathVariable(value = "reference") String reference, @Valid @RequestBody CompanyDTO company) {
         return companyService.updateCompanyByReference(reference, company);

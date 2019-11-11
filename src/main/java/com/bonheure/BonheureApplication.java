@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class BonheureApplication {
 
     public static void main(String[] args) {
+    	//test
         SpringApplication.run(BonheureApplication.class, args);
     }
 

@@ -1,13 +1,25 @@
 package com.bonheure.domain;
 
-
 import javax.persistence.*;
 
 @Entity
-@Table(indexes = {@Index(name = "index_wa_reference", columnList = "reference", unique = true)})
+@Table(indexes = { @Index(name = "index_wa_reference", columnList = "reference", unique = true) })
 public class WorkingArea {
 
-    public Long getId() {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(unique = true)
+	private String reference;
+
+	private Double latitude;
+
+	private Double longitude;
+
+	private String region;
+
+	public Long getId() {
 		return id;
 	}
 
@@ -47,30 +59,15 @@ public class WorkingArea {
 		this.region = region;
 	}
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
 
-    @Column(unique = true)
-    private String reference;
-
-    private Double latitude;
-
-    private Double longitude;
-
-    private String region;
-
-   
-
-    @Override
-    public int hashCode() {
-        // TODO Auto-generated method stub
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        // TODO Auto-generated method stub
-        return super.equals(obj);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
+	}
 }

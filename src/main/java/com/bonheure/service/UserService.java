@@ -16,6 +16,8 @@ import com.bonheure.security.SecurityUtils;
 import com.bonheure.utils.ApiMapper;
 import com.bonheure.utils.TokenUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
@@ -62,17 +64,16 @@ public class UserService {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-// for superadmin 
+			// for superadmin
 
-			userRepository.findByEmail(email).setActivated(true);
+			User user = userRepository.findOneByEmail(email).orElse(null);
+			user.setActivated(true);
 
-			Role authority = userRepository.findByEmail(email).getRole();
+			Role authority = user.getRole();
 
 			String jwt = jwtTokenProvider.createToken(email, authority);
 
-			
-			
-			return new JwtResponse(jwt, email, userRepository.findByEmail(email).getRole().toString());
+			return new JwtResponse(jwt, email, user.getRole().toString());
 
 		} catch (AuthenticationException e) {
 			throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -88,7 +89,7 @@ public class UserService {
 
 		if (userRepository.existsByEmail(userDTO.getEmail()) == false) {
 			userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-
+			userDTO.setActivated(true);
 			user = apiMapper.fromDTOToBean(userDTO);
 			userRepository.save(user);
 
@@ -152,7 +153,7 @@ public class UserService {
 		return userDTO;
 	}
 
-//request reset Passwrd
+	// request reset Passwrd
 	public UserDTO requestResetPassword(String mail) {
 		return userRepository.findOneByEmail(mail).filter(User::isActivated).map(user -> {
 
@@ -168,7 +169,7 @@ public class UserService {
 		}).orElseThrow(() -> new CustomException("account not yet activated ", HttpStatus.UNPROCESSABLE_ENTITY));
 	}
 
-//	resetPasswrd
+//		resetPasswrd
 	public UserDTO completePasswordReset(String newPassword, String key) {
 		logger.debug("Reset user password for reset key {}", key);
 
@@ -186,7 +187,7 @@ public class UserService {
 		return email.matches(regex);
 	}
 
-//get Current User
+	// get Current User
 	public User getCurrentUser() {
 
 		if (!SecurityUtils.checkIfThereIsUserLogged())
@@ -212,9 +213,9 @@ public class UserService {
 				.orElseThrow(() -> new CustomException("user not found ", HttpStatus.UNPROCESSABLE_ENTITY));
 
 	}
-	
-//getLoggedUser
-	
+
+	// getLoggedUser
+
 	public UserDTO getLoggedUser() {
 
 		if (!SecurityUtils.checkIfThereIsUserLogged())
@@ -223,17 +224,17 @@ public class UserService {
 		if (isEmail(SecurityUtils.getCurrentUserLogin())) {
 			User user = userRepository.findOneByEmail(SecurityUtils.getCurrentUserLogin()).orElse(null);
 
+			return userRepository.findOneByEmail(SecurityUtils.getCurrentUserLogin()).map(apiMapper::fromBeanToDTO)
+					.orElseThrow(() -> new CustomException("user not found ", HttpStatus.UNPROCESSABLE_ENTITY));
 
-				return userRepository.findOneByEmail(SecurityUtils.getCurrentUserLogin()).map(apiMapper::fromBeanToDTO)
-						.orElseThrow(() -> new CustomException("user not found ", HttpStatus.UNPROCESSABLE_ENTITY));
-			
 		}
 
 		return userRepository.findOneByMobileNumber(SecurityUtils.getCurrentUserLogin()).map(apiMapper::fromBeanToDTO)
 				.orElseThrow(() -> new CustomException("user not found ", HttpStatus.UNPROCESSABLE_ENTITY));
 
 	}
-	//.map(apiMapper::fromBeanToDTO)
+
+	// .map(apiMapper::fromBeanToDTO)
 	public boolean changePassword(String oldPassword, String newPassword) {
 		logger.debug("Reset user password for reset");
 
@@ -247,7 +248,5 @@ public class UserService {
 
 		return true;
 	}
-	
-	
 
 }

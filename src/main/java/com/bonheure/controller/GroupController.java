@@ -1,13 +1,17 @@
 package com.bonheure.controller;
 
 import com.bonheure.controller.dto.GroupDTO;
+import com.bonheure.controller.dto.UserDTO;
 import com.bonheure.service.GroupService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+ 
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,30 +25,53 @@ public class GroupController {
     private GroupService groupService;
 
 
-    @PostMapping("/save")
+//Postgroup
+     
+
     @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/saveGroup")
+    @ApiOperation(value = "${GroupController.saveGroup}")
+    @ApiResponses(value = {//
+    @ApiResponse(code = 400, message = "Something went wrong"), //
+    @ApiResponse(code = 403, message = "Access denied"), //
+    @ApiResponse(code = 422, message = "group is already in use")})
     public GroupDTO saveGroup(@RequestBody @Valid GroupDTO group) {
 
         return groupService.saveGroup(group);
     }
 
-    @GetMapping("/getByReference")
-    @ResponseStatus(HttpStatus.OK)
-    public GroupDTO getGroup(@RequestParam(required = false) String reference) {
+//getGroup
+    
+    @GetMapping("/getGroupByReference")
+    @ApiOperation(value = "${GroupController.getGroupByReference}", response = UserDTO.class)
+    @ApiResponses(value = {//
+    @ApiResponse(code = 400, message = "Something went wrong"), //
+    @ApiResponse(code = 403, message = "Access denied"), //
+    @ApiResponse(code = 404, message = "The group doesn't exist")})
+    public GroupDTO getGroupByReference(@RequestParam(required = false) String reference) {
+
 
         return groupService.getGroupByReference(reference);
     }
 
 
-    @DeleteMapping("/delete/{reference}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteGroup(@PathVariable(value = "reference") String reference) {
+//deleteUGroupByReference
+    
+    @DeleteMapping("/deleteGroupByReference")
+    @ApiOperation(value = "${GroupController.deleteUGroupByReference}")
+    @ApiResponses(value = {//
+    @ApiResponse(code = 400, message = "Something went wrong"), //
+    @ApiResponse(code = 403, message = "Access denied"), //
+    @ApiResponse(code = 404, message = "The Group doesn't exist")})
+    public void deleteUGroupByReference(@PathVariable(value = "reference") String reference) {
         groupService.deleteUGroupByReference(reference);
     }
 
+//updateUGroupByReference
+    
+    @PutMapping("/updateUGroupByReference")
+    @ApiOperation(value = "${GroupController.updateUGroupByReference}")
 
-    @GetMapping("/update")
-    @ResponseStatus(HttpStatus.OK)
     public GroupDTO updateGroup(@PathVariable(value = "reference") String reference, @Valid @RequestBody GroupDTO group) {
 
 

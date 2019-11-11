@@ -21,7 +21,6 @@ import com.bonheure.utils.ApiMapper;
 
 @Service
 public class PrestataireService {
-
 	@Autowired
 	PrestataireRepository prestataireRepository;
 
@@ -102,5 +101,4 @@ public class PrestataireService {
 		prestataireRepository.delete(prestataire);
 
 	}
-
 }

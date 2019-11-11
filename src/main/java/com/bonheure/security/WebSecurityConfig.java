@@ -3,7 +3,7 @@ package com.bonheure.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,22 +39,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// Entry points
 		http.authorizeRequests()//
-				.antMatchers("/**/signin").permitAll()//
-				.antMatchers("/**/signup").permitAll() 
-		        .antMatchers("/**/reset-pswd").permitAll() ; 
-				/*.antMatchers("/users/**").hasRole("SUPERADMIN")
-				.antMatchers("/clients/**").hasAnyAuthority("CLIENT", "SUPERADMIN")//
+				// .antMatchers("/**/signin").permitAll()//
+				//.antMatchers("/**/signup").permitAll()//
+				//.antMatchers("/users/**").hasAnyAuthority("CLIENT", "SUPERADMIN")//
+				//.antMatchers("/clients/**").hasAnyAuthority("CLIENT", "SUPERADMIN")//
 				.antMatchers("/prestataires/**").hasAnyAuthority("PRESTATAIRE", "SUPERADMIN")//
 				.antMatchers("/groups/**").hasAuthority("SUPERADMIN")//
 				.antMatchers("/categories/**").hasAuthority("SUPERADMIN")//
 				.antMatchers("/prestations/**").hasAnyAuthority("PRESTATAIRE", "SUPERADMIN")//
 				.antMatchers("/companies/**").hasAuthority("SUPERADMIN")//
 				.antMatchers("/working areas/**").hasAnyAuthority("PRESTATAIRE", "SUPERADMIN")//
-				.antMatchers("/address/**").hasAnyAuthority("PRESTATAIRE", "SUPERADMIN", "CLIENT")
-				.anyRequest().authenticated(); */
-//.antMatchers(HttpMethod.DELETE).hasAnyAuthority("SUPERADMIN")//
-
-		// If a user try to access a resource without having enough permissions
+				.antMatchers("/address/**").hasAnyAuthority("PRESTATAIRE", "SUPERADMIN", "CLIENT") 
+				.anyRequest().authenticated();
+		
+		// If a user try to access a resource without   having enough permissions
 		http.exceptionHandling().accessDeniedPage("/login");
 
 		// Apply JWT

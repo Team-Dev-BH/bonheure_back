@@ -1,9 +1,8 @@
 package com.bonheure.service;
 
 import com.bonheure.controller.dto.GroupDTO;
-import com.bonheure.controller.dto.UserDTO;
-import com.bonheure.domain.Group;
-import com.bonheure.domain.User;
+ import com.bonheure.domain.Group;
+ 
 import com.bonheure.repository.GroupRepository;
 import com.bonheure.utils.ApiMapper;
 
@@ -23,7 +22,8 @@ public class GroupService {
     @Autowired
     private ApiMapper apiMapper;
 
-
+//savegroup
+    
     public GroupDTO saveGroup(GroupDTO groupDTO) {
 
     	groupDTO.setReference(UUID.randomUUID().toString());
@@ -33,7 +33,8 @@ public class GroupService {
         return groupDTO;
 
     }
-
+//getgroupByReference
+    
     public GroupDTO getGroupByReference(String reference) {
     	Group group = groupRepository.findOneByReference(reference).
                 orElse(null);
@@ -45,7 +46,8 @@ public class GroupService {
         return groupDTO;
     }
 
-
+//deleteUGroupByReference
+    
     public void deleteUGroupByReference(String reference) {
     	Group group = groupRepository.findOneByReference(reference).
                 orElse(null);
@@ -54,7 +56,7 @@ public class GroupService {
     	groupRepository.delete(group);
 
     }
-
+//updateUGroupByReference
     public GroupDTO updateUGroupByReference(String reference, GroupDTO groupDTO) {
 
         //TODO throw exception if not found

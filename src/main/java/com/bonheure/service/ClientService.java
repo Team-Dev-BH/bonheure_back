@@ -47,27 +47,7 @@ public class ClientService {
 	@Autowired
 	private CompanyRepository companyRepository;
 	@Autowired
-	private UserRepository userRepository  ; 
-
-//	// signin
-//	public JwtResponse signin(String email, String password) {
-//
-//		try {
-//
-//			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-//			
-//			Client client = clientRepository.findOneByEmail(email).orElse(null);
-//			
-//			Role authority = client.getRole();
-//
-//			String jwt = jwtTokenProvider.createToken(email, authority);
-//
-//			return new JwtResponse(jwt, email, client.getRole().toString());
-//
-//		} catch (AuthenticationException e) {
-//			throw new CustomException("Invalid email/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
-//		}
-//	}
+	private UserRepository userRepository;
 
 	// signin
 	public JSONObject signin(String email, String password) {
@@ -110,7 +90,7 @@ public class ClientService {
 	}
 
 	// signup
-	public String signUp(ClientDTO clientDTO ) { ///put a code within// 
+	public String signUp(ClientDTO clientDTO) { /// put a code within//
 
 		clientDTO.setReference(UUID.randomUUID().toString());
 		Client client = new Client();
@@ -159,7 +139,7 @@ public class ClientService {
 
 	}
 
-//update
+	// update
 	public ClientDTO updateClientByReference(String reference, ClientDTO clientDTO) {
 
 		Client oldClient = clientRepository.findOneByReference(reference).orElse(null);
@@ -174,13 +154,11 @@ public class ClientService {
 		}
 		return clientDTO;
 	}
-	
-	public Client getClientFromUser(String reference) {
-		
-	return	clientRepository.findOneByReference(reference).orElseThrow(() ->new CustomException("Client does not exist", HttpStatus.UNPROCESSABLE_ENTITY));
-		
-		
-		
-	}
 
-} 
+	public Client getClientFromUser(String reference) {
+
+		return clientRepository.findOneByReference(reference)
+				.orElseThrow(() -> new CustomException("Client does not exist", HttpStatus.UNPROCESSABLE_ENTITY));
+
+	}
+}

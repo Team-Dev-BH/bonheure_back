@@ -1,41 +1,84 @@
 package com.bonheure.domain;
 
+import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.*;
 
+import com.bonheure.controller.dto.PrestationDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 @Entity
-@Table(indexes = {@Index(name = "index_category_reference", columnList = "reference", unique = true)})
-public class Category {
+@Table(indexes = { @Index(name = "index_category_reference", columnList = "reference", unique = true),
+                   @Index(name="index_category_name", columnList = "name", unique = true)
+})
+public class Category implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4443853764079923105L;
 
-    @Column(unique = true)
-    private String reference;
-    @Column(unique = true)
-    private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    public Long getId() {
-        return id;
-    }
+	@Column(unique = true)
+	private String reference;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@Column(unique = true)
+	private String name;
+	
+	private String description;
 
-    public String getReference() {
-        return reference;
-    }
+	@ManyToMany(mappedBy = "categories")
+	private Set<Prestation> prestations;
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getReference() {
+		return reference;
+	}
+
+	public Set<Prestation> getPrestations() {
+		return prestations;
+	}
+
+	public void setPrestations(Set<Prestation> prestations) {
+		this.prestations = prestations;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 }

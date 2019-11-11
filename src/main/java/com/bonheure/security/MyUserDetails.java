@@ -38,8 +38,9 @@ public class MyUserDetails implements UserDetailsService {
 			if (user == null) {
 				throw new UsernameNotFoundException("User with email  '" + username + "' not found");
 			}
-			
-		return org.springframework.security.core.userdetails.User//
+
+
+			return org.springframework.security.core.userdetails.User//
 					.withUsername(username)//
 					.password(user.getPassword())//
 					.authorities(user.getRole())//
@@ -52,13 +53,14 @@ public class MyUserDetails implements UserDetailsService {
 		}
 		// else if type of user presataire
 
-	user = userRepository.findOneByMobileNumber(username).orElse(null);
+
+		user = userRepository.findOneByMobileNumber(username).orElse(null);
 
 		if (user == null) {
 			throw new UsernameNotFoundException("prestataire with mobile number '" + username + "' not found");
 		}
-		
-		
+
+
 		return org.springframework.security.core.userdetails.User//
 				.withUsername(username)//
 				.password(user.getPassword())//

@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(indexes = {@Index(name = "index_address_reference", columnList = "reference", unique = true)})
+
 public class Address {
 
     @Id
